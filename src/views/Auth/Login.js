@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react'
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { useObserver } from "mobx-react";
 
 import { StoreContext } from "../../store"
 
-import { LoginService } from "../../api/Auth"
+import { LoginService, AuthService } from "../../api/Auth"
 
 import styled from "styled-components"
 
@@ -16,6 +16,7 @@ const LoginContainer = styled.div`
 function Login() {
 
   const store = useContext(StoreContext)
+  const history = useHistory()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -30,9 +31,22 @@ function Login() {
       store.logUserIn(res.data.user)
       localStorage.setItem("token", res.data.access)
       localStorage.setItem("refresh", res.data.refresh)
+      history.push("/")
     })
   }
 
+  const token = localStorage.getItem("token")
+
+  if (token) {
+    console.log("GOT HERE")
+    let service = new AuthService()
+    service.verifyToken(token)
+    .then(res=>{
+      console.log(res)
+      store.logUserIn(res.data.user)
+      return <Redirect to="/" />
+    })
+  }
 
   if (useObserver(() => store.isLogged)) {
     return <Redirect to="/" />
@@ -47,7 +61,7 @@ function Login() {
       <LoginContainer>
         <form style={{padding: "1rem"}} onSubmit={onSubmit}>
           <div style={{display: "flex"}}>
-            <span style={{flex: "1"}}>Email</span>
+            <span style={{flex: "1"}}>Username</span>
             <input style={{flex: "3"}} onChange={e=>setEmail(e.target.value)}/>
           </div>
           <div style={{display: "flex"}}>

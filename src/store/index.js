@@ -1,10 +1,10 @@
 import React from "react"
-import { useLocalObservable } from "mobx-react"
+import { useObserver } from "mobx-react"
 
 export const StoreContext = React.createContext()
 
 export const StoreProvider = ({children}) => {
-  const store = useLocalObservable(() => ({
+  const store = useObserver(() => ({
     isLogged: false,
     user: {},
     logUserIn: user => {

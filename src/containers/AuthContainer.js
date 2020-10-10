@@ -3,27 +3,29 @@ import { StoreContext } from "../store"
 import { useObserver } from "mobx-react";
 import { AuthService } from "../api/Auth"
 
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 const AuthContainer = ({children}) => {
   const store = useContext(StoreContext)
+  const history = useHistory()
   const token = localStorage.getItem("token")
 
-  console.log("GOT HERE")
-
-  if (useObserver(() => !store.isLogged) && token) {
+  if (useObserver(() => !store.isLogged)) {
     let service = new AuthService()
     service.verifyToken(token)
     .then(res => {
       store.logUserIn(res.data.user)
+      return (<Redirect to="/" />)
     })
     .catch(res=>{
       let refresh = localStorage.getItem("refresh")
       if (refresh) {
+
         service.refreshToken(refresh)
         .then(res=>{
           store.logUserIn(res.data.user)
           localStorage.setItem("token", res.data.access)
+          return (<Redirect to="/" />)
         })
         .catch(res=>{
           localStorage.removeItem("token")
@@ -32,19 +34,13 @@ const AuthContainer = ({children}) => {
           return (<Redirect to="/auth/login/" />)
         })
       } else {
-        localStorage.removeItem("token")
-        localStorage.removeItem("refresh")
-        localStorage.removeItem("userId")
-        return (<Redirect to="/auth/login/" />)
+        console.log("GOT HERE 7")
+        history.push("/auth/login/")
       }
     })
   } else {
-    localStorage.removeItem("token")
-    localStorage.removeItem("refresh")
-    localStorage.removeItem("userId")
-    return (<Redirect to="/auth/login/" />)
+    return (<React.Fragment>{children}</React.Fragment>)
   }
-
   return (<React.Fragment>{children}</React.Fragment>)
 }
 
