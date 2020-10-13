@@ -38,11 +38,9 @@ function Login() {
   const token = localStorage.getItem("token")
 
   if (token) {
-    console.log("GOT HERE")
     let service = new AuthService()
     service.verifyToken(token)
     .then(res=>{
-      console.log(res)
       store.logUserIn(res.data.user)
       return <Redirect to="/" />
     })

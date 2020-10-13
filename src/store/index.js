@@ -14,6 +14,8 @@ export const StoreProvider = ({children}) => {
     logUserOut: () => {
       store.isLogged = false
       store.user = {}
+      localStorage.removeItem("token")
+      localStorage.removeItem("refresh")
     }
    
   }))

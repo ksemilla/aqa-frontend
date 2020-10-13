@@ -2,6 +2,18 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8000';
 
+const getTokenAuth = () => {
+  let accessToken = localStorage.getItem("token")
+  return "JWT " + accessToken
+}
+
+const getConfig = () => ({
+  headers: {
+    'Content-Type':  'application/json',
+    Authorization: getTokenAuth()
+  }
+})
+
 export class AuthService{
 	verifyToken(token){
 		let data = {token: token}
