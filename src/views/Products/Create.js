@@ -3,8 +3,8 @@ import { useHistory } from "react-router-dom"
 
 import ProductService from "../../api/Product"
 
+import Container from 'react-bootstrap/Container'
 import styled from "styled-components"
-import { ProductCreate } from '..'
 
 const Button = styled.button`
   &:hover {
@@ -52,7 +52,7 @@ function Create() {
   }
 
   return (
-    <div>
+    <Container>
       <div>Creating new Product</div>
       <form onSubmit={onSubmit}> 
         <div>
@@ -81,7 +81,7 @@ function Create() {
         </div>
         <Button type="submit">Add</Button>
       </form>
-    </div>
+    </Container>
   )
 }
 

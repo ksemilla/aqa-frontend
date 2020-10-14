@@ -7,6 +7,9 @@ import ProductCreate from "./Products/Create"
 import ProductDetail from "./Products/Detail"
 import ProductEdit from "./Products/Edit"
 
+import QuotationList from "./Quotations/List"
+import QuotationCreate from "./Quotations/Create"
+
 export {
   Login,
 
@@ -16,4 +19,7 @@ export {
   ProductCreate,
   ProductDetail,
   ProductEdit,
+
+  QuotationList,
+  QuotationCreate,
 }

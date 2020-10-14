@@ -14,36 +14,31 @@ const getConfig = () => ({
   }
 })
 
-export default class ProductService{
+export default class QuotationService{
 
     getAll(){
-      const url = `${API_URL}/api/products/`;
+      const url = `${API_URL}/api/quotations/`;
       return axios.get(url, getConfig());
     }
 
     create(data) {
-      const url = `${API_URL}/api/products/`;
+      const url = `${API_URL}/api/quotations/`;
       return axios.post(url, data, getConfig());
     }
 
     get(id) {
-      const url = `${API_URL}/api/products/${id}/`
+      const url = `${API_URL}/api/quotations/${id}/`
       return axios.get(url, getConfig());
     }
 
     update(data) {
-      const url = `${API_URL}/api/products/${data.id}/`
+      const url = `${API_URL}/api/quotations/${data.id}/`
       return axios.put(url, data, getConfig());
     }
 
     delete(id) {
-      const url = `${API_URL}/api/products/${id}/`
+      const url = `${API_URL}/api/quotations/${id}/`
       return axios.delete(url, getConfig());
-    }
-
-    query(query) {
-      const url = `${API_URL}/api/products/query/`
-      return axios.get(url, {params: {query}, ...getConfig()});
     }
 
 }

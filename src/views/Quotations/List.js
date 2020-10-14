@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from "react-router-dom"
 import Container from 'react-bootstrap/Container'
 
-import ProductService from "../../api/Product"
+import QuotationService from "../../api/Quotation"
 import Inline from "./Inline"
 
 import styled from "styled-components"
@@ -29,15 +29,15 @@ const Item = styled.span`
 
 function List() {
 
-  const [products, setProducts] = useState([])
+  const [quotations, setQuotations] = useState([])
   const history = useHistory()
 
   useEffect(()=>{
-    let api = new ProductService()
+    let api = new QuotationService()
     api.getAll()
     .then(res=>{
       if (res.data.length > 0) {
-        setProducts(res.data)
+        setQuotations(res.data)
       }
     })
   }, [])
@@ -45,8 +45,8 @@ function List() {
   return (
     <Container>
       <div style={{padding: "1rem 0rem"}}>
-        <span>Products - </span>
-        <Add onClick={()=>history.push(`/products/create`)}>Add new</Add>
+        <span>Quotations - </span>
+        <Add onClick={()=>history.push(`/quotations/create`)}>Add new</Add>
       </div>
       <ListWrapper>
         <Item width={`200px`}>Model</Item>
@@ -57,8 +57,8 @@ function List() {
         <Item width={`200px`}>Capacity</Item>
       </ListWrapper>
       {
-        products.map((product, idx)=>(
-          <Inline key={idx} product={product} bgColor={idx % 2 === 0 ? "#EEE" : ""}/>
+        quotations.map((quotation, idx)=>(
+          <Inline key={idx} quotation={quotation} bgColor={idx % 2 === 0 ? "#EEE" : ""}/>
         ))
       }
     </Container>
