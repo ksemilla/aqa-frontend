@@ -10,6 +10,8 @@ import ProductEdit from "./Products/Edit"
 import QuotationList from "./Quotations/List"
 import QuotationCreate from "./Quotations/Create"
 
+import Page404 from "./404"
+
 export {
   Login,
 
@@ -22,4 +24,6 @@ export {
 
   QuotationList,
   QuotationCreate,
+
+  Page404
 }

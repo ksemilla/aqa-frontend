@@ -14,6 +14,7 @@ const PillItem = styled(Link)`
   color: ${props=>props.color};
   margin: 0rem 0.25rem;
   background-color: ${props=>props.bgColor};
+  border-radius: 5px;
   &:hover {
     color: black;
     text-decoration:none;

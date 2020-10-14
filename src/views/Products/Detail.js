@@ -58,7 +58,7 @@ function Detail() {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-sm">
-            Are you sure want to delete this product?
+            Delete this Product?
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

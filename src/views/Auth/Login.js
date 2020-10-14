@@ -13,6 +13,18 @@ const LoginContainer = styled.div`
   width: 24rem;
 `
 
+const Button = styled.button`
+  width: 100%;
+  border: none;
+  margin: 1rem 0rem;
+  padding: 0.5rem;
+  background-color: rgba(28, 147, 232, 0.9);
+  border-radius: 5px;
+  &:hover {
+    background-color: rgba(28, 147, 232, 1);
+  }
+`
+
 function Login() {
 
   const store = useContext(StoreContext)
@@ -58,15 +70,15 @@ function Login() {
       </div>
       <LoginContainer>
         <form style={{padding: "1rem"}} onSubmit={onSubmit}>
-          <div style={{display: "flex"}}>
-            <span style={{flex: "1"}}>Username</span>
-            <input style={{flex: "3"}} onChange={e=>setEmail(e.target.value)}/>
+          <div style={{}}>
+            <div>Username</div>
+            <input onChange={e=>setEmail(e.target.value)} style={{width: "100%"}}/>
           </div>
-          <div style={{display: "flex"}}>
-            <span style={{flex: "1"}}>Password</span>
-            <input style={{flex: "3"}} onChange={e=>setPassword(e.target.value)}/>
+          <div>
+            <div>Password</div>
+            <input type="password" onChange={e=>setPassword(e.target.value)} style={{width: "100%"}}/>
           </div>
-          <button style={{width: "100%"}}>Login</button>
+          <Button>Login</Button>
         </form>
       </LoginContainer>
     </div>
