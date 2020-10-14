@@ -26,4 +26,19 @@ export default class ProductService{
       return axios.post(url, data, getConfig());
     }
 
+    get(id) {
+      const url = `${API_URL}/api/products/${id}/`
+      return axios.get(url, getConfig());
+    }
+
+    update(data) {
+      const url = `${API_URL}/api/products/${data.id}/`
+      return axios.put(url, data, getConfig());
+    }
+
+    delete(id) {
+      const url = `${API_URL}/api/products/${id}/`
+      return axios.delete(url, getConfig());
+    }
+
 }

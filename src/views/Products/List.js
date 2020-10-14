@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom"
 import Container from 'react-bootstrap/Container'
 
 import ProductService from "../../api/Product"
+import Inline from "./Inline"
 
 import styled from "styled-components"
 
@@ -31,12 +32,12 @@ function List() {
   return (
     <Container fluid>
       <div>
-        <span>Products</span>
+        <span>Products - </span>
         <Add onClick={()=>history.push(`/products/create`)}>Add new</Add>
       </div>
       {
         products.map((product, idx)=>(
-        <div>{product.model_name}</div>
+          <Inline key={idx} product={product} bgColor={idx % 2 === 0 ? "#EEE" : ""}/>
         ))
       }
     </Container>

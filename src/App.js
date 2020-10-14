@@ -8,7 +8,7 @@ import Footer from "./components/Footer"
 
 import { Login } from "./views"
 import { Home } from "./views"
-import { ProductList, ProductCreate } from "./views"
+import { ProductList, ProductCreate, ProductDetail, ProductEdit } from "./views"
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -23,6 +23,8 @@ function App() {
 
           <Route path='/products' component={ProductList} exact />
           <Route path='/products/create' component={ProductCreate} exact />
+          <Route path='/product/:id' component={ProductDetail} exact />
+          <Route path='/product/:id/edit' component={ProductEdit} exact />
           {/* <Footer /> */}
         </AuthContainer>
       </Switch>

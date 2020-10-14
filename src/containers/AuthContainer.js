@@ -12,33 +12,38 @@ const AuthContainer = ({children}) => {
   const token = localStorage.getItem("token")
 
   if (useObserver(() => !store.isLogged)) {
-    let service = new AuthService()
-    service.verifyToken(token)
-    .then(res => {
-      store.logUserIn(res.data.user)
-      return (<Redirect to="/" />)
-    })
-    .catch(res=>{
-      let refresh = localStorage.getItem("refresh")
-      if (refresh) {
+    if (token) {
+      let service = new AuthService()
+      service.verifyToken(token)
+      .then(res => {
+        store.logUserIn(res.data.user)
+        return (<Redirect to="/" />)
+      })
+      .catch(res=>{
+        let refresh = localStorage.getItem("refresh")
+        if (refresh) {
 
-        service.refreshToken(refresh)
-        .then(res=>{
-          store.logUserIn(res.data.user)
-          localStorage.setItem("token", res.data.access)
-          return (<Redirect to="/" />)
-        })
-        .catch(res=>{
-          localStorage.removeItem("token")
-          localStorage.removeItem("refresh")
-          localStorage.removeItem("userId")
-          return (<Redirect to="/auth/login/" />)
-        })
-      } else {
-        console.log("GOT HERE 7")
-        history.push("/auth/login/")
-      }
-    })
+          service.refreshToken(refresh)
+          .then(res=>{
+            store.logUserIn(res.data.user)
+            localStorage.setItem("token", res.data.access)
+            return (<Redirect to="/" />)
+          })
+          .catch(res=>{
+            localStorage.removeItem("token")
+            localStorage.removeItem("refresh")
+            localStorage.removeItem("userId")
+            return (<Redirect to="/auth/login/" />)
+          })
+        } else {
+          console.log("GOT HERE 7")
+          history.push("/auth/login/")
+        }
+      })
+    } else {
+      return (<Redirect to="/auth/login/" />)
+    }
+    
   } else {
     return (<React.Fragment>{children}</React.Fragment>)
   }
