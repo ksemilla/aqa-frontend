@@ -21,14 +21,11 @@ const Item = styled.span`
 
 function Inline({ quotation, bgColor }) {
   const history = useHistory()
+  console.log(quotation)
   return (
     <ListWrapper bgColor={bgColor} onClick={()=>history.push(`/quotation/${quotation.id}`)}>
-      <Item width={`200px`}>{quotation.model_name}</Item>
-      <Item width={`300px`}>{quotation.description}</Item>
-      <Item width={`200px`}>{quotation.sell_price / 100}</Item>
-      <Item width={`200px`}>{quotation.cost_price / 100}</Item>
-      <Item width={`200px`}>{quotation.stock_qty / 100}</Item>
-      <Item width={`200px`}>{quotation.capacity}</Item>
+      <Item width={`200px`}>{quotation.id}</Item>
+      <Item width={`300px`}>{quotation.company_name}</Item>
     </ListWrapper>
   )
 }

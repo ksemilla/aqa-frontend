@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Link, useLocation } from "react-router-dom"
 
 import { StoreContext } from "../store"

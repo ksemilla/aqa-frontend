@@ -16,8 +16,11 @@ export const StoreProvider = ({children}) => {
       store.user = {}
       localStorage.removeItem("token")
       localStorage.removeItem("refresh")
+    },
+    products: [],
+    setProducts: xproducts => {
+      store.products = xproducts
     }
-   
   }))
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>

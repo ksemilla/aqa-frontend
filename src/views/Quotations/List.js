@@ -49,12 +49,8 @@ function List() {
         <Add onClick={()=>history.push(`/quotations/create`)}>Add new</Add>
       </div>
       <ListWrapper>
-        <Item width={`200px`}>Model</Item>
-        <Item width={`300px`}>Description</Item>
-        <Item width={`200px`}>Sell Price</Item>
-        <Item width={`200px`}>Cost Price</Item>
-        <Item width={`200px`}>Stocks</Item>
-        <Item width={`200px`}>Capacity</Item>
+        <Item width={`200px`}>ID</Item>
+        <Item width={`300px`}>Customer</Item>
       </ListWrapper>
       {
         quotations.map((quotation, idx)=>(
