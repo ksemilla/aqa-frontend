@@ -1,19 +1,12 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 
 import Autosuggest from 'react-autosuggest';
-import TextareaAutosize from 'react-autosize-textarea';
 import { TextArea } from "../../styles/elements/TextArea"
 import { Input } from "../../styles/elements/Input"
 
 import ProductService from "../../api/Product"
 
 import styled from "styled-components"
-
-const Button = styled.div`
-  &:hover {
-    cursor: pointer;
-  }
-`
 
 const Remove = styled.div`
   border: 1px solid;

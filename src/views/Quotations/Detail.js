@@ -31,7 +31,7 @@ function Detail() {
       res.data.items.sort(sortByLineNumber)
       setQuotation(res.data)
     })
-  }, [])
+  }, [service, id])
 
   return (
     quotation && 

@@ -142,7 +142,7 @@ function Create() {
     .then(res=>{
       setData(res.data)
     })
-  }, [])
+  }, [id, service])
 
   return (
     <Container>

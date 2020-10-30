@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from "react-router-dom"
 
 import QuotationService from "../../api/Quotation"
@@ -58,7 +58,7 @@ function Create() {
   let service = new QuotationService()
   const history = useHistory()
   const [data, setData] = useState({
-    created_date: "",
+    created_date: moment().toISOString(),
     company_name: "",
     subject: "",
     project: "",
@@ -132,13 +132,6 @@ function Create() {
       history.push(`/quotation/${res.data.id}`)
     })
   }
-
-  useEffect(()=>{
-    setData({
-      ...data,
-      created_date: moment().toISOString()
-    })
-  }, [])
 
   return (
     <Container>

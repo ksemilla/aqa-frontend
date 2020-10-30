@@ -4,7 +4,6 @@ import { useParams, useHistory } from "react-router-dom"
 import ProductService from "../../api/Product"
 
 import Container from 'react-bootstrap/Container'
-import styled from "styled-components"
 
 function Edit() {
 
@@ -51,7 +50,7 @@ function Edit() {
         stock_qty: res.data.stock_qty / 100,
       })
     })
-  }, [])
+  }, [id])
 
   return (
     product && 

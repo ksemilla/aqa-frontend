@@ -1,8 +1,5 @@
-import React, { useEffect, useContext } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-
-import { StoreContext } from "./store"
-import ProductService from "./api/Product"
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import AuthContainer from "./containers/AuthContainer"
 
@@ -18,17 +15,6 @@ import { Page404 } from "./views"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-
-  const store = useContext(StoreContext)
-  const service = new ProductService()
-
-  useEffect(()=>{
-    service.getAll()
-    .then(res=>{
-      store.setProducts(res.data)
-    })
-    
-  }, [])
 
   return (
     <Router>
