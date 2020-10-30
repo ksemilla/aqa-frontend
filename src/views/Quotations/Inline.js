@@ -21,7 +21,6 @@ const Item = styled.span`
 
 function Inline({ quotation, bgColor }) {
   const history = useHistory()
-  console.log(quotation)
   return (
     <ListWrapper bgColor={bgColor} onClick={()=>history.push(`/quotation/${quotation.id}`)}>
       <Item width={`200px`}>{quotation.id}</Item>

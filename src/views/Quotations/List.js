@@ -38,7 +38,6 @@ function List() {
     .then(res=>{
       if (res.data.results.length > 0) {
         setQuotations(res.data.results)
-        console.log(res.data.results)
       }
     })
   }, [])

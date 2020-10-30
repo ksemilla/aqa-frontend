@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { Input } from "../../styles/elements/Input"
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
+import moment from "moment"
+
 import { Container } from "../../styles/Containers"
 import styled from "styled-components"
 
@@ -118,20 +120,16 @@ function Create() {
     let newData = {
       ...data
     }
-    console.log(newData)
-    // service.create(newData)
-    // .then(res=>{
-    //   console.log(res)
-    // })
-    // .catch(res=>{
-    //   console.log(res.response)
-    // })
+    service.create(newData)
+    .then(res=>{
+      history.push(`/quotation/${res.data.id}`)
+    })
   }
 
   useEffect(()=>{
     setData({
       ...data,
-      created_date: today.toISOString()
+      created_date: moment().toISOString()
     })
   }, [])
 
@@ -151,7 +149,7 @@ function Create() {
             <div style={{flex: 1, display: "flex", alignItems: "center"}}>
               <div style={{width: "30%"}}>Date Created: </div>
               <DayPickerInput
-                value={`${yyyy}-${mm}-${dd}`}
+                value={moment(data.created_date).format("YYYY-MM-DD")}
                 dayPickerProps={{
                   showWeekNumbers: true,
                   todayButton: 'Today',
@@ -171,7 +169,8 @@ function Create() {
                     border: "1px solid #BBB",
                     borderRadius: "5px",
                     padding: "0.2rem"
-                  }
+                  },
+                  disabled: true
                 }}
               />
             </div>
