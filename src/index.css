@@ -24,3 +24,8 @@ ul {
   margin: 0;
   padding: 0;
 }
+
+.react-autosuggest__suggestions-list {
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
