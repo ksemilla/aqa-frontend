@@ -13,7 +13,7 @@ const PillItem = styled(Link)`
   padding: 0.5rem;
   color: ${props=>props.color};
   margin: 0rem 0.25rem;
-  background-color: ${props=>props.bgColor};
+  background-color: ${props=>props.bgcolor};
   border-radius: 5px;
   &:hover {
     color: black;
@@ -36,10 +36,10 @@ function NavComponent() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav>
             <Nav.Item>
-              <PillItem to="/quotations" color={page==="quotations" ? "black" : "rgba(0,0,0,.5)"} bgColor={page==="quotations" ? "#007bff" : ""}>Quotations</PillItem>
+              <PillItem to="/quotations" color={page==="quotations" ? "black" : "rgba(0,0,0,.5)"} bgcolor={page==="quotations" ? "#007bff" : ""} >Quotations</PillItem>
             </Nav.Item>
             <Nav.Item>
-              <PillItem to="/products" color={page==="products" ? "black" : "rgba(0,0,0,.5)"} bgColor={page==="products" ? "#007bff" : ""}>Products</PillItem>
+              <PillItem to="/products" color={page==="products" ? "black" : "rgba(0,0,0,.5)"} bgcolor={page==="products" ? "#007bff" : ""} >Products</PillItem>
             </Nav.Item>
           </Nav>
           <Nav>
