@@ -212,7 +212,7 @@ function Create() {
             </div>
             <div style={{display: "flex", alignItems: "center"}}>
               <div style={{width: "30%"}}>Discount</div>
-              <Input name="discount" value={data.discount} onChange={onChange}/>
+              <Input name="discount" value={data.discount} onChange={onChange} type="number" step={0.01} min={0} max={100} />
             </div>
             <div style={{display: "flex", alignItems: "center"}}>
               <div style={{}}>Total Discounted Price</div>

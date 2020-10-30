@@ -51,6 +51,9 @@ function List() {
       <ListWrapper>
         <Item width={`200px`}>ID</Item>
         <Item width={`300px`}>Customer</Item>
+        <Item width={`200px`}>Author</Item>
+        <Item width={`200px`}>Total Discounted Price</Item>
+        <Item width={`200px`}>Valid until</Item>
       </ListWrapper>
       {
         quotations.map((quotation, idx)=>(

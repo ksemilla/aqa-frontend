@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory, useParams } from "react-router-dom"
 
 import QuotationService from "../../api/Quotation"
-import CreateInline from "./CreateInline"
+import EditInline from "./EditInline"
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -216,7 +216,7 @@ function Create() {
             </div>
             <div style={{display: "flex", alignItems: "center"}}>
               <div style={{width: "30%"}}>Discount</div>
-              <Input name="discount" value={data.discount} onChange={onChange}/>
+              <Input name="discount" value={data.discount} onChange={onChange} type="number" step={0.01} min={0} max={100}/>
             </div>
             <div style={{display: "flex", alignItems: "center"}}>
               <div style={{}}>Total Discounted Price</div>
@@ -232,8 +232,11 @@ function Create() {
         {
           data.items.map((item, idx)=>{
             item.line_number = idx
+            if (!item.key) {
+              item.key = uuidv4()
+            }
             return (
-              <CreateInline key={item.key} item={item} remove={removeItem} itemChange={itemChange} />
+              <EditInline key={item.key} item={item} remove={removeItem} itemChange={itemChange} />
             )
           })
         }

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useHistory } from "react-router-dom"
+import moment from "moment"
 
 import styled from "styled-components"
 
@@ -25,6 +26,9 @@ function Inline({ quotation, bgColor }) {
     <ListWrapper bgColor={bgColor} onClick={()=>history.push(`/quotation/${quotation.id}`)}>
       <Item width={`200px`}>{quotation.id}</Item>
       <Item width={`300px`}>{quotation.company_name}</Item>
+      <Item width={`200px`}>{quotation.author_detail.email}</Item>
+      <Item width={`200px`}>{quotation.total_price * (100 - quotation.discount) / 100}</Item>
+      <Item width={`200px`}>{moment(quotation.expiry_date).format("MMM DD, YYYY")}</Item>
     </ListWrapper>
   )
 }

@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react'
 
 import Autosuggest from 'react-autosuggest';
 import TextareaAutosize from 'react-autosize-textarea';
+import { TextArea } from "../../styles/elements/TextArea"
+import { Input } from "../../styles/elements/Input"
 
 import ProductService from "../../api/Product"
 
@@ -13,12 +15,24 @@ const Button = styled.div`
   }
 `
 
-function EditInline({ item, remove, itemChange }) {
+const Remove = styled.div`
+  border: 1px solid;
+  border-radius: 5px;
+  text-align: center;
+  &:hover {
+    cursor: pointer;
+    color: red;
+  }
+`
+
+function CreateInline({ item, remove, itemChange }) {
 
   const service = new ProductService()
   const [suggestions, setSuggestions] = useState([])
   const [choice, setChoices] = useState([])
   const [value, setValue] = useState(item.model_name)
+  const [showList, setShowList] = useState(false)
+  const [curr, setCurr] = useState(null)
 
   const getSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
@@ -32,7 +46,7 @@ function EditInline({ item, remove, itemChange }) {
   const getSuggestionValue = suggestion => suggestion.model_name;
 
   const renderSuggestion = suggestion => (
-    <div style={{color: "red", border: "1px solid"}}>
+    <div style={{borderTop: "1px solid #EEE", borderBottom: "1px solid #EEE", padding: "0.2rem", backgroundColor: suggestion.id === curr ? "#EEE" : ""}}>
       {suggestion.model_name}
     </div>
   );
@@ -43,7 +57,6 @@ function EditInline({ item, remove, itemChange }) {
       service.query(newValue)
       .then(res=>{
         setChoices(res.data)
-        console.log(res.data)
       })
     } else {
       setChoices([])
@@ -52,33 +65,35 @@ function EditInline({ item, remove, itemChange }) {
 
   const onSuggestionsFetchRequested = ({ value }) => {
     setSuggestions(getSuggestions(value))
+    setShowList(true)
   };
 
   const onSuggestionsClearRequested = () => {
     setSuggestions([])
+    setShowList(false)
   };
 
   const inputProps = {
     value,
     onChange: onChange,
     style: {
-      width: "100%"
+      width: "100%",
+      border: "1px solid #BBB",
+      borderRadius: "5px",
+      padding: "0.2rem"
     }
   };
 
-  const getQuery = e => {
-    service.query()
-  }
   return (
     <div style={{display: "flex"}}>
       <div style={{width: "20px"}}>{item.line_number + 1}.</div>
-      <div style={{width: "200px"}}>
-        <input style={{width: "100%"}} value={item.tagging} onChange={e=>itemChange({
+      <div style={{flex: 1, padding: "0.2rem"}}>
+        <Input value={item.tagging} onChange={e=>itemChange({
           idx: item.line_number,
           tagging: e.target.value
         })} />
       </div>
-      <div style={{flex: 1}}>
+      <div style={{flex: 1, padding: "0.2rem"}}>
         <Autosuggest
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -87,7 +102,6 @@ function EditInline({ item, remove, itemChange }) {
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
           onSuggestionSelected={(event, { suggestion })=>{
-            console.log(suggestion)
             itemChange({ idx: item.line_number,
               product: suggestion.id,
               model_name: suggestion.model_name,
@@ -97,44 +111,47 @@ function EditInline({ item, remove, itemChange }) {
           }}
           renderSuggestionsContainer={({ containerProps, children, query })=>{
             return (
-              <div style={{position: "absolute", backgroundColor: "white", border: "1px solid blue"}}>
-                <div {...containerProps}>
+              <div style={{position: "relative", height: "0px"}}>
+                <div {...containerProps} style={{width: "100%", backgroundColor: "white", border: showList ? "1px solid #CCC" : "none", borderRadius: "5px"}}>
                   {children}
                 </div>
               </div>
             )
           }}
+          onSuggestionHighlighted={({suggestion})=>{
+            setCurr(suggestion ? suggestion.id : null)
+          }}
         />
       </div>
-      <div style={{flex: 2}}>
-        <TextareaAutosize value={item.description} style={{width: "100%"}} onChange={e=>{
+      <div style={{flex: 2, padding: "0.2rem"}}>
+        <TextArea value={item.description} style={{width: "100%"}} onChange={e=>{
           itemChange({
             idx: item.line_number,
             description: e.target.value
           })
         }}/>
       </div>
-      <div style={{width: "80px"}}>
-        <input style={{width: "100%"}} type="number" min={0} value={item.quantity} onChange={e=>{
+      <div style={{width: "100px", padding: "0.2rem"}}>
+        <Input style={{width: "100%"}} type="number" min={0} value={item.quantity} onChange={e=>{
           itemChange({
             idx: item.line_number,
             quantity: e.target.value
           })
         }}/>
       </div>
-      <div style={{width: "80px"}}>
+      <div style={{width: "100px", padding: "0.2rem"}}>
         {item.sell_price}
       </div>
-        <div style={{width: "80px"}}>{item.quantity * item.sell_price}</div>
-      <div style={{width: "80px"}}>
-        <Button onClick={e=>{
+      <div style={{width: "100px", padding: "0.2rem"}}>{item.quantity * item.sell_price}</div>
+      <div style={{width: "100px", padding: "0.2rem"}}>
+        <Remove onClick={e=>{
           e.preventDefault()
           remove(item.key)
-        }}>Remove</Button>
+        }}><i className="fa fa-times" ariaHidden="true"></i></Remove>
       </div>
       
     </div>
   )
 }
 
-export default EditInline
+export default CreateInline
