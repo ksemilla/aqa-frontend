@@ -36,8 +36,9 @@ function List() {
     let api = new QuotationService()
     api.getAll()
     .then(res=>{
-      if (res.data.length > 0) {
-        setQuotations(res.data)
+      if (res.data.results.length > 0) {
+        setQuotations(res.data.results)
+        console.log(res.data.results)
       }
     })
   }, [])

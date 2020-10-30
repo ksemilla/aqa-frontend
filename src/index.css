@@ -18,3 +18,9 @@ html, body, #root {
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
 }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

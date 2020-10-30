@@ -12,7 +12,7 @@ import Footer from "./components/Footer"
 import { Login } from "./views"
 import { Home } from "./views"
 import { ProductList, ProductCreate, ProductDetail, ProductEdit } from "./views"
-import { QuotationList, QuotationCreate } from "./views"
+import { QuotationList, QuotationCreate, QuotationDetail, QuotationEdit } from "./views"
 import { Page404 } from "./views"
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -45,8 +45,8 @@ function App() {
 
           <Route path='/quotations' component={QuotationList} exact />
           <Route path='/quotations/create' component={QuotationCreate} exact />
-          {/* <Route path='/quotation/:id' component={QuotationDetail} exact /> */}
-          {/* <Route path='/quotation/:id/edit' component={QuotationEdit} exact /> */}
+          <Route path='/quotation/:id' component={QuotationDetail} exact />
+          <Route path='/quotation/:id/edit' component={QuotationEdit} exact />
 
           {/* <Route path='/404' component={Page404} /> */}
           {/* <Redirect to="/404" /> */}

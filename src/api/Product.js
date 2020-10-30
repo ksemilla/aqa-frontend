@@ -42,7 +42,7 @@ export default class ProductService{
     }
 
     query(query) {
-      const url = `${API_URL}/api/products/query/`
+      const url = `${API_URL}/api/products/search/`
       return axios.get(url, {params: {query}, ...getConfig()});
     }
 

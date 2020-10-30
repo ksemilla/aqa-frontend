@@ -36,8 +36,8 @@ function List() {
     let api = new ProductService()
     api.getAll()
     .then(res=>{
-      if (res.data.length > 0) {
-        setProducts(res.data)
+      if (res.data.results.length > 0) {
+        setProducts(res.data.results)
       }
     })
   }, [])

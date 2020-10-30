@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useHistory } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 
 import ProductService from "../../api/Product"
 import QuotationService from "../../api/Quotation"
+import { sortByLineNumber } from "../../utils"
 
-import CreateInline from "./CreateInline"
+import EditInline from "./EditInline"
 
 import { v4 as uuidv4 } from 'uuid';
 // import Container from 'react-bootstrap/Container'
@@ -33,9 +34,10 @@ const QuotationItemHeader = () => {
   )
 }
 
-function Create() {
+function Edit() {
 
   let service = new QuotationService()
+  const { id } = useParams()
   const history = useHistory()
   const [data, setData] = useState({
     company_name: "",
@@ -78,7 +80,6 @@ function Create() {
     tempData.items[newData.idx].description = newData.description ? newData.description : tempData.items[newData.idx].description
     tempData.items[newData.idx].quantity = newData.quantity ? newData.quantity : tempData.items[newData.idx].quantity
     tempData.items[newData.idx].sell_price = newData.sell_price ? parseFloat(newData.sell_price) : tempData.items[newData.idx].sell_price
-    console.log(tempData.items)
     setData(tempData)
   }
 
@@ -98,12 +99,19 @@ function Create() {
     let newData = {
       ...data
     }
-    console.log(newData)
-    // service.create(newData)
-    // .then(res=>{
-    //   console.log(res)
-    // })
+    service.update(newData)
+    .then(res=>{
+      history.push(`/quotation/${id}`)
+    })
   }
+
+  useEffect(()=>{
+    service.get(id)
+    .then(res=>{
+      res.data.items.sort(sortByLineNumber)
+      setData(res.data)
+    })
+  }, [])
 
   return (
     <Container>
@@ -140,18 +148,21 @@ function Create() {
         {
           data.items.map((item, idx)=>{
             item.line_number = idx
+            if (!item.key) {
+              item.key = uuidv4()
+            }
             return (
-              <CreateInline key={item.key} item={item} remove={removeItem} itemChange={itemChange} />
+              <EditInline key={item.key} item={item} remove={removeItem} itemChange={itemChange} />
             )
           })
         }
 
         <Button style={{display: "block"}} onClick={addItem}>Add Item</Button>
 
-        <button>Save Quotation</button>
+        <button>Update Quotation</button>
       </form>
     </Container>
   )
 }
 
-export default Create
+export default Edit

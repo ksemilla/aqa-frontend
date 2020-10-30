@@ -13,7 +13,7 @@ const Button = styled.div`
   }
 `
 
-function CreateInline({ item, remove, itemChange }) {
+function EditInline({ item, remove, itemChange }) {
 
   const service = new ProductService()
   const [suggestions, setSuggestions] = useState([])
@@ -137,4 +137,4 @@ function CreateInline({ item, remove, itemChange }) {
   )
 }
 
-export default CreateInline
+export default EditInline
