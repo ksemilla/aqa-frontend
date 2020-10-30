@@ -26,6 +26,18 @@ const AddItemButton = styled.div`
   }
 `
 
+const SubmitButton = styled.div`
+  padding: 0.3rem 0.7rem;
+  color: white;
+  border-radius: 5px;
+  background-color: rgba(28, 77, 237,0.9);
+  display: inline-block;
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(28, 77, 237, 1);
+  }
+`
+
 const QuotationItemHeader = () => {
   return (
     <div style={{display: "flex", }}>
@@ -64,11 +76,6 @@ function Create() {
       sell_price: 0
     }]
   })
-
-  let today = new Date();
-  let dd = String(today.getDate()).padStart(2, '0');
-  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  let yyyy = today.getFullYear();
 
   const addItem = e => {
     e.preventDefault()
@@ -231,7 +238,7 @@ function Create() {
 
         <hr />
 
-        <button>Save Quotation</button>
+        <SubmitButton type="submit">Save Quotation</SubmitButton>
       </form>
     </Container>
   )
