@@ -34,8 +34,6 @@ function Detail() {
     })
   }, [id])
 
-  console.log(quotation)
-
   return (
     quotation && 
     <Container style={{padding: "0.2rem"}}>

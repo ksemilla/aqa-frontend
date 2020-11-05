@@ -72,6 +72,7 @@ function Create() {
     payment_terms: "",
     location: "",
     discount: 0,
+    total_price: 0,
     application_engr: 0,
     ae_detail: {},
     sales_engr: 0,
@@ -116,11 +117,16 @@ function Create() {
     let tempData = JSON.parse(JSON.stringify(data))
     tempData.items[newData.idx].line_number = newData.line_number ? newData.line_number : tempData.items[newData.idx].line_number
     tempData.items[newData.idx].tagging = newData.tagging ? newData.tagging : tempData.items[newData.idx].tagging
-    tempData.items[newData.idx].product = newData.product ? parseFloat(newData.product) : tempData.items[newData.idx].product
-    tempData.items[newData.idx].model_name = newData.model_name ? newData.model_name : tempData.items[newData.idx].model_name
-    tempData.items[newData.idx].description = newData.description ? newData.description : tempData.items[newData.idx].description
-    tempData.items[newData.idx].quantity = newData.quantity ? newData.quantity : tempData.items[newData.idx].quantity
-    tempData.items[newData.idx].sell_price = newData.sell_price ? parseFloat(newData.sell_price) : tempData.items[newData.idx].sell_price
+    tempData.items[newData.idx].product = newData.product || newData.product === 0 ? parseFloat(newData.product) : tempData.items[newData.idx].product
+    tempData.items[newData.idx].model_name = newData.model_name || newData.model_name === "" ? newData.model_name : tempData.items[newData.idx].model_name
+    tempData.items[newData.idx].description = newData.description || newData.description === "" ? newData.description : tempData.items[newData.idx].description
+    tempData.items[newData.idx].quantity = newData.quantity || newData.quantity === 0 ? newData.quantity : tempData.items[newData.idx].quantity
+    tempData.items[newData.idx].sell_price = newData.sell_price || newData.sell_price === 0 ? parseFloat(newData.sell_price) : tempData.items[newData.idx].sell_price
+    let total = 0
+    tempData.items.forEach(element => {
+      total += element.sell_price * element.quantity
+    });
+    tempData.total_price = total
     setData(tempData)
   }
 
@@ -145,7 +151,6 @@ function Create() {
       ...data,
       discount: data.discount === "" ? 0 : data.discount
     }
-    console.log(newData)
     let service = new QuotationService()
     service.create(newData)
     .then(res=>{
@@ -236,7 +241,7 @@ function Create() {
           <div style={{flex: 1, display: "flex", alignItems: "center"}}>
             <div style={{padding: "0.5rem", width: "100px"}}>Total Price</div>
             <div style={{flex: 1}}>
-              <Input name="sub_subject" disabled/>
+              <Input name="total_price" value={data.total_price} disabled/>
             </div>
           </div>
         </div>

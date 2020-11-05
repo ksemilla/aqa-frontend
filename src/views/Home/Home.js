@@ -7,6 +7,7 @@ function Home() {
     <div style={{height: "1000px"}}>
       Home Page
     </div>
+    
   </Container>)
 }
 

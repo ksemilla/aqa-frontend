@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import Autosuggest from 'react-autosuggest';
 import { TextArea } from "../../styles/elements/TextArea"
 import { Input } from "../../styles/elements/Input"
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import ProductService from "../../api/Product"
 
@@ -20,62 +22,8 @@ const Remove = styled.div`
 
 function CreateInline({ item, remove, itemChange }) {
 
-  const service = new ProductService()
-  const [suggestions, setSuggestions] = useState([])
-  const [choice, setChoices] = useState([])
-  const [value, setValue] = useState(item.model_name)
-  const [showList, setShowList] = useState(false)
-  const [curr, setCurr] = useState(null)
-
-  const getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-   
-    return inputLength === 0 ? [] : choice.filter(item =>
-      item.model_name.toLowerCase().slice(0, inputLength) === inputValue
-    );
-  };
-
-  const getSuggestionValue = suggestion => suggestion.model_name;
-
-  const renderSuggestion = suggestion => (
-    <div style={{borderTop: "1px solid #EEE", borderBottom: "1px solid #EEE", padding: "0.2rem", backgroundColor: suggestion.id === curr ? "#EEE" : ""}}>
-      {suggestion.model_name}
-    </div>
-  );
-
-  const onChange = (event, { newValue }) => {
-    setValue(newValue)
-    if (newValue.length > 1) {
-      service.query(newValue)
-      .then(res=>{
-        setChoices(res.data)
-      })
-    } else {
-      setChoices([])
-    }
-  };
-
-  const onSuggestionsFetchRequested = ({ value }) => {
-    setSuggestions(getSuggestions(value))
-    setShowList(true)
-  };
-
-  const onSuggestionsClearRequested = () => {
-    setSuggestions([])
-    setShowList(false)
-  };
-
-  const inputProps = {
-    value,
-    onChange: onChange,
-    style: {
-      width: "100%",
-      border: "1px solid #BBB",
-      borderRadius: "5px",
-      padding: "0.2rem"
-    }
-  };
+  let service = new ProductService()
+  const [options, setOptions] = useState([item])
 
   return (
     <div style={{display: "flex"}}>
@@ -87,32 +35,36 @@ function CreateInline({ item, remove, itemChange }) {
         })} />
       </div>
       <div style={{flex: 1, padding: "0.2rem"}}>
-        <Autosuggest
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={onSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
-          renderSuggestion={renderSuggestion}
-          inputProps={inputProps}
-          onSuggestionSelected={(event, { suggestion })=>{
+        <Autocomplete
+          options={options}
+          getOptionLabel={(option) => option.model_name}
+          clearOnEscape
+          blurOnSelect
+          renderInput={(params) => <TextField {...params}  />}
+          value={item}
+          getOptionSelected={(o,v)=> o.mdoel_name === v.mdoel_name}
+          onChange={(event, value)=>{
+            value === null || value === "" ? 
             itemChange({ idx: item.line_number,
-              product: suggestion.id,
-              model_name: suggestion.model_name,
-              description: suggestion.description,
-              sell_price: suggestion.sell_price,
+              product: 0,
+              model_name: "",
+              description: "",
+              sell_price: 0,
+              quantity: 0
+            })
+            :
+            itemChange({ idx: item.line_number,
+              product: value.id,
+              model_name: value.model_name,
+              description: value.description,
+              sell_price: value.sell_price,
             })
           }}
-          renderSuggestionsContainer={({ containerProps, children, query })=>{
-            return (
-              <div style={{position: "relative", height: "0px"}}>
-                <div {...containerProps} style={{width: "100%", backgroundColor: "white", border: showList ? "1px solid #CCC" : "none", borderRadius: "5px"}}>
-                  {children}
-                </div>
-              </div>
-            )
-          }}
-          onSuggestionHighlighted={({suggestion})=>{
-            setCurr(suggestion ? suggestion.id : null)
+          onInputChange={(event, value)=>{
+            service.query(value)
+            .then(res=>{
+              setOptions(res.data)
+            })
           }}
         />
       </div>
