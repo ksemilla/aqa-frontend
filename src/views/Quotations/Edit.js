@@ -75,6 +75,7 @@ function Edit() {
     payment_terms: "",
     location: "",
     discount: 0,
+    total_price: 0,
     application_engr: 0,
     ae_detail: null,
     sales_engr: 0,
@@ -169,7 +170,14 @@ function Edit() {
     let service = new QuotationService()
     service.get(id)
     .then(res=>{
-      setData(res.data)
+      let total = 0
+      res.data.items.forEach(item=>{
+        total += item.sell_price * item.quantity
+      })
+      setData({
+        ...res.data,
+        total_price: total
+      })
     })
     if (Object.keys(store.roles).length === 0) {
       let service = new UserService()
@@ -185,7 +193,7 @@ function Edit() {
   }, [])
 
   return (
-    <Container>
+    <Container style={{padding: "0.5rem"}}>
       <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>
         <div style={{flex: 1, fontWeight: "bold", fontSize: "2.5rem", color: "#285ac7"}}>AQA</div>
         <div style={{flex: 1, fontSize: "2rem"}}>Quotation # {id}</div>
@@ -251,7 +259,7 @@ function Edit() {
           <div style={{flex: 1, display: "flex", alignItems: "center"}}>
             <div style={{padding: "0.5rem", width: "100px"}}>Total Price</div>
             <div style={{flex: 1}}>
-              <Input name="sub_subject" disabled/>
+              <Input name="total_price" value={data.total_price} disabled/>
             </div>
           </div>
         </div>
@@ -346,7 +354,7 @@ function Edit() {
 
         <hr />
 
-        <SubmitButton type="submit" onClick={onSubmit}>Save Quotation</SubmitButton>
+        <SubmitButton type="submit" onClick={onSubmit}>Update Quotation</SubmitButton>
       </form>
     </Container>
   )
