@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from "react-router-dom"
-import Container from 'react-bootstrap/Container'
+import {Container} from '../../styles/Containers'
 
 import QuotationService from "../../api/Quotation"
 import Inline from "./Inline"
@@ -9,10 +9,10 @@ import styled from "styled-components"
 
 const Add = styled.span`
   padding: 1rem;
-  color: blue;
+  color: #186bc4;
   &:hover {
     cursor: pointer;
-    background-color: #EEE;
+    color: #11549c;
   }
 `
 
@@ -20,16 +20,16 @@ const ListWrapper = styled.div`
   display: flex;
 `
 
-const Item = styled.span`
+const Item = styled.div`
   padding: 0.5rem;
-  vertical-align: center;
-  width: ${props => props.width};
-  flex: ${props => props.flex};
+  flex: 1;
 `
 
 function List() {
 
   const [quotations, setQuotations] = useState([])
+  const [next, setNext] = useState(null)
+  const [prev, setPrev] = useState(null) 
   const history = useHistory()
 
   useEffect(()=>{
@@ -38,22 +38,25 @@ function List() {
     .then(res=>{
       if (res.data.results.length > 0) {
         setQuotations(res.data.results)
+        setNext(res.data.next)
+        setPrev(res.data.previous)
       }
+      
     })
   }, [])
 
   return (
     <Container>
-      <div style={{padding: "1rem 0rem"}}>
-        <span>Quotations - </span>
-        <Add onClick={()=>history.push(`/quotations/create`)}>Add new</Add>
+      <div style={{display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem"}}>
+        <div>Quotations</div>
+        <Add onClick={()=>history.push(`/quotations/create`)}><i className="fa fa-plus" aria-hidden="true"></i></Add>
       </div>
-      <ListWrapper>
-        <Item width={`200px`}>ID</Item>
-        <Item width={`300px`}>Customer</Item>
-        <Item width={`200px`}>Author</Item>
-        <Item width={`200px`}>Total Discounted Price</Item>
-        <Item width={`200px`}>Valid until</Item>
+      <ListWrapper style={{fontSize: "1.1rem", fontWeight: "bold"}}>
+        <Item>ID</Item>
+        <Item>Customer</Item>
+        <Item>App. Engr</Item>
+        <Item>Disc. Price</Item>
+        <Item>Expiry</Item>
       </ListWrapper>
       {
         quotations.map((quotation, idx)=>(

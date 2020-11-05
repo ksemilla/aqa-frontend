@@ -13,22 +13,20 @@ const ListWrapper = styled.div`
   }
 `
 
-const Item = styled.span`
+const Item = styled.div`
   padding: 0.5rem;
-  vertical-align: center;
-  width: ${props => props.width};
-  flex: ${props => props.flex};
+  flex: 1;
 `
 
 function Inline({ quotation, bgColor }) {
   const history = useHistory()
   return (
     <ListWrapper bgColor={bgColor} onClick={()=>history.push(`/quotation/${quotation.id}`)}>
-      <Item width={`200px`}>{quotation.id}</Item>
-      <Item width={`300px`}>{quotation.company_name}</Item>
-      <Item width={`200px`}>{quotation.author_detail.email}</Item>
-      <Item width={`200px`}>{quotation.total_price * (100 - quotation.discount) / 100}</Item>
-      <Item width={`200px`}>{moment(quotation.expiry_date).format("MMM DD, YYYY")}</Item>
+      <Item >{quotation.id}</Item>
+      <Item >{quotation.company_name}</Item>
+      <Item >{quotation.author_detail.email.split("@")[0]}</Item>
+      <Item >{quotation.total_price * (100 - quotation.discount) / 100}</Item>
+      <Item >{moment(quotation.expiry_date).format("MMM DD, YYYY")}</Item>
     </ListWrapper>
   )
 }
