@@ -140,7 +140,7 @@ function CreateInline({ item, remove, itemChange }) {
         <Remove onClick={e=>{
           e.preventDefault()
           remove(item.key)
-        }}><i className="fa fa-times" ariaHidden="true"></i></Remove>
+        }}><i className="fa fa-times" aria-hidden="true"></i></Remove>
       </div>
       
     </div>

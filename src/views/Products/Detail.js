@@ -33,7 +33,7 @@ function Detail() {
     .then(res=>{
       setProduct(res.data)
     })
-  }, [service, id])
+  }, [])
 
   return (
     product &&

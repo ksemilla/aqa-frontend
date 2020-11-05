@@ -17,9 +17,9 @@ export const StoreProvider = ({children}) => {
       localStorage.removeItem("token")
       localStorage.removeItem("refresh")
     },
-    products: [],
-    setProducts: xproducts => {
-      store.products = xproducts
+    roles: {},
+    setRoles: roles => {
+      store.roles = roles
     }
   }))
   return (

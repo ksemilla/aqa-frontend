@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useHistory } from "react-router-dom"
+import { StoreContext } from "../../store"
 
 import QuotationService from "../../api/Quotation"
+import UserService from "../../api/User"
+
 import CreateInline from "./CreateInline"
 
 import { v4 as uuidv4 } from 'uuid';
@@ -10,6 +13,8 @@ import { Input } from "../../styles/elements/Input"
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import moment from "moment"
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import { Container } from "../../styles/Containers"
 import styled from "styled-components"
@@ -55,8 +60,10 @@ const QuotationItemHeader = () => {
 
 function Create() {
 
-  let service = new QuotationService()
+  const store = useContext(StoreContext)
   const history = useHistory()
+  const [showHeader, setShowHeader] = useState(true)
+  const [roles, setRoles] = useState(null)
   const [data, setData] = useState({
     created_date: moment().toISOString(),
     company_name: "",
@@ -65,6 +72,12 @@ function Create() {
     payment_terms: "",
     location: "",
     discount: 0,
+    application_engr: 0,
+    ae_detail: {},
+    sales_engr: 0,
+    se_detail: {},
+    sales_lead: 0,
+    sl_detail: {},
     items: [{
       key: uuidv4(),
       line_number: 0,
@@ -113,8 +126,12 @@ function Create() {
 
   const onChange = e => {
     let value = e.target.value
-    if (e.target.name === "sell_price" || e.target.name === "cost_price" || e.target.name === "stock_qty") {
-      value = parseFloat(e.target.value)
+    if (e.target.name === "discount") {
+      if (value === "") {
+        value = ""
+      } else {
+        value = parseFloat(value)
+      }
     }
     setData({
       ...data,
@@ -125,95 +142,175 @@ function Create() {
   const onSubmit = e => {
     e.preventDefault()
     let newData = {
-      ...data
+      ...data,
+      discount: data.discount === "" ? 0 : data.discount
     }
+    console.log(newData)
+    let service = new QuotationService()
     service.create(newData)
     .then(res=>{
       history.push(`/quotation/${res.data.id}`)
     })
+    .catch(res=>{
+      console.log(res.response)
+    })
   }
 
+  useEffect(()=>{
+    if (Object.keys(store.roles).length === 0) {
+      let service = new UserService()
+      service.getRoles()
+      .then(res=>{
+        store.setRoles(res.data)
+        setRoles(res.data)
+      })
+    }
+    setRoles(store.roles)
+  }, [])
+
   return (
-    <Container>
+    <Container style={{padding: "0.5rem"}}>
+
+      <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>
+        <div style={{flex: 1, fontWeight: "bold", fontSize: "2.5rem", color: "#285ac7"}}>AQA</div>
+        <div style={{flex: 1, fontSize: "2rem"}}>Creating New Quotation</div>
+        <div style={{flex: 1}}></div>
+      </div>
+
       <form onSubmit={onSubmit}>
-        <div style={{display: "flex"}}>
+        <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>
           <div style={{flex: 1, display: "flex", alignItems: "center"}}>
-            <div style={{fontWeight: "bold", fontSize: "2.5rem", color: "#285ac7"}}>AQA</div>
-          </div>
-          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
-            <div style={{fontWeight: "bold", fontSize: "2rem"}} >
-              {/* CENTER PART KEKW */}
+            <div style={{padding: "0.5rem", width: "100px"}}>Company</div>
+            <div style={{flex: 1}}>
+              <Input name="company_name" value={data.company_name} onChange={onChange}/>
             </div>
           </div>
-          <div style={{flex: 1}}>
-            <div style={{flex: 1, display: "flex", alignItems: "center"}}>
-              <div style={{width: "30%"}}>Date Created: </div>
-              <DayPickerInput
-                value={moment(data.created_date).format("YYYY-MM-DD")}
-                dayPickerProps={{
-                  showWeekNumbers: true,
-                  todayButton: 'Today',
-                }}
-                onDayChange={(selectedDay, modifiers, dayPickerInput)=>{
-                  setData({
-                    ...data,
-                    created_date: dayPickerInput.getInput().value
-                  })
-                }}
-                style={{
-                  width: "100%"
-                }}
-                inputProps={{
-                  style: {
-                    width: "100%",
-                    border: "1px solid #BBB",
-                    borderRadius: "5px",
-                    padding: "0.2rem"
-                  },
-                  disabled: true
-                }}
-              />
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Created</div>
+            <div style={{flex: 1}}>
+              <Input name="created_date" value={moment(data.created_date).format("YYYY-MM-DD")} onChange={onChange} disabled/>
             </div>
-            <div style={{display: "flex", alignItems: "center"}}>
-              <div style={{width: "30%"}}>Project</div>
+          </div>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Expiry</div>
+            <div style={{flex: 1}}>
+              <Input name="expiry_date" defaultValue={moment().add(30,'days').format("YYYY-MM-DD")} disabled/>
+            </div>
+          </div>
+        </div>
+
+        <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Project</div>
+            <div style={{flex: 1}}>
               <Input name="project" value={data.project} onChange={onChange}/>
             </div>
           </div>
-        </div>
-        <div style={{display: "flex", marginTop: "1rem"}}>
-          <div style={{flex: 1}}>
-            <div style={{display: "flex", alignItems: "center"}}>
-              <div style={{width: "30%"}}>Company Name</div>
-              <Input name="company_name" value={data.company_name} onChange={onChange}/>
-            </div>
-            <div style={{display: "flex", alignItems: "center"}}>
-              <div style={{width: "30%"}}>Location</div>
-              <Input name="location" value={data.location} onChange={onChange}/>
-            </div>
-            <div style={{display: "flex", alignItems: "center"}}>
-              <div style={{width: "30%"}}>Subject</div>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Subject</div>
+            <div style={{flex: 1}}>
               <Input name="subject" value={data.subject} onChange={onChange}/>
             </div>
           </div>
-          <div style={{flex: 1}}>
-                {/* CENTER PART KEKW */}
-          </div>
-          <div style={{flex: 1}}>
-            <div style={{display: "flex", alignItems: "center"}}>
-              <div style={{width: "30%"}}>Payment Terms</div>
-              <Input name="payment_terms" value={data.payment_terms} onChange={onChange}/>
-            </div>
-            <div style={{display: "flex", alignItems: "center"}}>
-              <div style={{width: "30%"}}>Discount</div>
-              <Input name="discount" value={data.discount} onChange={onChange} type="number" step={0.01} min={0} max={100} />
-            </div>
-            <div style={{display: "flex", alignItems: "center"}}>
-              <div style={{}}>Total Discounted Price</div>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Description</div>
+            <div style={{flex: 1}}>
+              <Input name="sub_subject" value={data.sub_subject} onChange={onChange}/>
             </div>
           </div>
         </div>
-        
-        
+
+        <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Location</div>
+            <div style={{flex: 1}}>
+              <Input name="location" value={data.location} onChange={onChange}/>
+            </div>
+          </div>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Discount</div>
+            <div style={{flex: 1}}>
+              <Input name="discount" value={data.discount} onChange={onChange} type="number" min={0} step={0.01}/>
+            </div>
+          </div>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Total Price</div>
+            <div style={{flex: 1}}>
+              <Input name="sub_subject" disabled/>
+            </div>
+          </div>
+        </div>
+
+        <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Terms</div>
+            <div style={{flex: 1}}>
+              <Input name="payment_terms" value={data.payment_terms} onChange={onChange}/>
+            </div>
+          </div>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+  
+          </div>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+
+          </div>
+        </div>
+
+
+        <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>App. Engr.</div>
+            <div style={{flex: 1}}>
+            <Autocomplete
+              options={roles ? roles.ae : []}
+              getOptionLabel={(option) => option.email}
+              clearOnEscape
+              blurOnSelect
+              renderInput={(params) => <TextField {...params}  />}
+              
+              getOptionSelected={(o,v)=> o.email === v.email}
+              onChange={(event, value)=>{
+                setData({...data, ae_detail: value, application_engr: value ? value.id : 0})
+              }}
+            />
+            </div>
+          </div>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Sales Engr.</div>
+            <div style={{flex: 1}}>
+            <Autocomplete
+              options={roles ? roles.se : []}
+              getOptionLabel={(option) => option.email}
+              clearOnEscape
+              blurOnSelect
+              renderInput={(params) => <TextField {...params}  />}
+              
+              getOptionSelected={(o,v)=> o.email === v.email}
+              onChange={(event, value)=>{
+                setData({...data, se_detail: value, sales_engr: value ? value.id : 0})
+              }}
+            />
+            </div>
+          </div>
+          <div style={{flex: 1, display: "flex", alignItems: "center"}}>
+            <div style={{padding: "0.5rem", width: "100px"}}>Sales Lead</div>
+            <div style={{flex: 1}}>
+            <Autocomplete
+              options={roles ? roles.sl : []}
+              getOptionLabel={(option) => option.email}
+              clearOnEscape
+              blurOnSelect
+              renderInput={(params) => <TextField {...params}  />}
+              
+              getOptionSelected={(o,v)=> o.email === v.email}
+              onChange={(event, value)=>{
+                setData({...data, sl_detail: value, sales_lead: value ? value.id : 0})
+              }}
+            />
+            </div>
+          </div>
+        </div>
+
         <hr />
 
         <QuotationItemHeader />
@@ -231,7 +328,7 @@ function Create() {
 
         <hr />
 
-        <SubmitButton type="submit">Save Quotation</SubmitButton>
+        <SubmitButton type="submit" onClick={onSubmit}>Save Quotation</SubmitButton>
       </form>
     </Container>
   )

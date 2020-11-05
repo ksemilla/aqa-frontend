@@ -58,7 +58,7 @@ function Edit() {
       <div>Editing</div>
       <form onSubmit={onSubmit}>
         <div>
-          <div>Model  Name</div>
+          <div>Model Name</div>
           <input name="model_name" value={product.model_name} onChange={onChange}/>
         </div>
         <div>

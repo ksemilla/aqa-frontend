@@ -16,7 +16,7 @@ const Button = styled.button({
 function Detail() {
 
   const [quotation, setQuotation] = useState(null)
-  const service = new QuotationService()
+  
   const { id } = useParams()
   const [alert, setAlert] = useState(false)
   const history = useHistory()
@@ -26,12 +26,15 @@ function Detail() {
   }
 
   useEffect(()=>{
+    let service = new QuotationService()
     service.get(id)
     .then(res=>{
       res.data.items.sort(sortByLineNumber)
       setQuotation(res.data)
     })
-  }, [service, id])
+  }, [id])
+
+  console.log(quotation)
 
   return (
     quotation && 
