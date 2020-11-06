@@ -25,11 +25,20 @@ const Item = styled.div`
   flex: 1;
 `
 
+const Paginator = styled.div`
+  font-size: 1.3rem;
+  &:hover {
+    cursor: pointer;
+    color: blue;
+  }
+`
+
 function List() {
 
-  const [quotations, setQuotations] = useState([])
+  const [quotations, setQuotations] = useState(null)
   const [next, setNext] = useState(null)
-  const [prev, setPrev] = useState(null) 
+  const [prev, setPrev] = useState(null)
+  const [count, setCount] = useState(0)
   const history = useHistory()
 
   useEffect(()=>{
@@ -40,12 +49,13 @@ function List() {
         setQuotations(res.data.results)
         setNext(res.data.next)
         setPrev(res.data.previous)
+        setCount(res.data.count)
       }
-      
     })
   }, [])
 
   return (
+    quotations && 
     <Container>
       <div style={{display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem"}}>
         <div>Quotations</div>
@@ -63,6 +73,33 @@ function List() {
           <Inline key={idx} quotation={quotation} bgColor={idx % 2 === 0 ? "#EEE" : ""}/>
         ))
       }
+      <div style={{display: "flex", justifyContent: "center"}}>
+        <Paginator onClick={()=>{
+          let api = new QuotationService()
+          api.getNextList(prev)
+          .then(res=>{
+            if (res.data.results.length > 0) {
+              setQuotations(res.data.results)
+              setNext(res.data.next)
+              setPrev(res.data.previous)
+              setCount(res.data.count)
+            }
+          }) 
+        }}>{prev ? <i className="fa fa-angle-double-left" aria-hidden="true"></i> : null}</Paginator>
+        <div style={{marginLeft: "1.5rem", marginRight: "1.5rem", color: "black", fontSize: "1.3rem"}}>{prev ? prev[prev.length - 1] === "/" ? Math.ceil(count / 20) : prev[prev.length - 1] : 1}</div>
+        <Paginator onClick={()=>{
+          let api = new QuotationService()
+          api.getNextList(next)
+          .then(res=>{
+            if (res.data.results.length > 0) {
+              setQuotations(res.data.results)
+              setNext(res.data.next)
+              setPrev(res.data.previous)
+              setCount(res.data.count)
+            }
+          }) 
+        }}>{next ? <i className="fa fa-angle-double-right" aria-hidden="true"></i> : null}</Paginator>
+      </div>  
     </Container>
   )
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { get } from 'mobx';
 
 const API_URL = 'http://localhost:8000';
 
@@ -39,6 +40,10 @@ export default class QuotationService{
     delete(id) {
       const url = `${API_URL}/api/quotations/${id}/`
       return axios.delete(url, getConfig());
+    }
+
+    getNextList(url) {
+      return axios.get(url, getConfig())
     }
 
 }

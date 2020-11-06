@@ -182,8 +182,10 @@ function Create() {
         store.setRoles(res.data)
         setRoles(res.data)
       })
+    } else {
+      setRoles(store.roles)
     }
-    setRoles(store.roles)
+    
   }, [])
 
   return (
@@ -297,12 +299,12 @@ function Create() {
             <div style={{padding: "0.5rem", width: "100px"}}>Sales Engr.</div>
             <div style={{flex: 1}}>
               <Autocomplete
-                options={roles ? roles.se : []}
+                options={roles.se}
                 getOptionLabel={(option) => option.email}
                 clearOnEscape
                 blurOnSelect
                 renderInput={(params) => <TextField {...params}  />}
-                
+                value={data.se_detail}
                 getOptionSelected={(o,v)=> o.email === v.email}
                 onChange={(event, value)=>{
                   setData({...data, se_detail: value, sales_engr: value ? value.id : 0})
@@ -314,12 +316,12 @@ function Create() {
             <div style={{padding: "0.5rem", width: "100px"}}>Sales Lead</div>
             <div style={{flex: 1}}>
               <Autocomplete
-                options={roles ? roles.sl : []}
+                options={roles.sl}
                 getOptionLabel={(option) => option.email}
                 clearOnEscape
                 blurOnSelect
                 renderInput={(params) => <TextField {...params}  />}
-                
+                value={data.sl_detail}
                 getOptionSelected={(o,v)=> o.email === v.email}
                 onChange={(event, value)=>{
                   setData({...data, sl_detail: value, sales_lead: value ? value.id : 0})
