@@ -9,7 +9,6 @@ import EditInline from "./EditInline"
 import { v4 as uuidv4 } from 'uuid';
 
 import { Input } from "../../styles/elements/Input"
-import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import moment from "moment"
 import TextField from '@material-ui/core/TextField';
@@ -190,7 +189,7 @@ function Edit() {
       setRoles(store.roles)
     }
     
-  }, [])
+  }, [id, store])
 
   return (
     <Container style={{padding: "0.5rem"}}>

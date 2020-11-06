@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 
+import {StoreContext} from "../../store"
 import QuotationService from "../../api/Quotation"
 import { sortByLineNumber } from "../../utils"
 import DetailInline from "./DetailInline"
@@ -41,13 +42,18 @@ const Delete = styled.div`
 function Detail() {
 
   const [quotation, setQuotation] = useState(null)
-  
+  const store = useContext(StoreContext)
   const { id } = useParams()
   const [alert, setAlert] = useState(false)
+  const [isAllowed, setIsAllowed] = useState(false)
   const history = useHistory()
 
   const remove = () => {
-    console.log("DELETE QUOTATION")
+    let service = new QuotationService()
+    service.delete(id)
+    .then(res=>{
+      history.push(`/quotations`)
+    })
   }
 
   useEffect(()=>{
@@ -56,8 +62,18 @@ function Detail() {
     .then(res=>{
       res.data.items.sort(sortByLineNumber)
       setQuotation(res.data)
+      if (quotation) {
+        if (store.user.scope === "ae") {
+          setIsAllowed(store.user.id === quotation.ae_detail.id)
+        } else if (store.user.scope === "se") {
+          setIsAllowed(store.user.id === quotation.se_detail.id)
+        } else if (store.user.scope === "sl") {
+          setIsAllowed(store.user.id === quotation.sl_detail.id)
+        }
+      }
+      
     })
-  }, [id])
+  }, [id, quotation, store.user.scope, store.user.id])
 
   return (
     quotation && 
@@ -164,14 +180,18 @@ function Detail() {
 
       <hr />
 
-      <div style={{display: "flex"}}>
-        <div style={{display: "flex", justifyContent: "center", flex: 1}}>
-          <Edit onClick={()=>history.push(`/quotation/${id}/edit`)}>Edit</Edit>
+      {
+        isAllowed ?
+        <div style={{display: "flex"}}>
+          <div style={{display: "flex", justifyContent: "center", flex: 1}}>
+            <Edit onClick={()=>history.push(`/quotation/${id}/edit`)}>Edit</Edit>
+          </div>
+          <div style={{display: "flex", justifyContent: "center", flex: 1}}>
+            <Delete onClick={()=>setAlert(true)}>Delete</Delete>
+          </div>
         </div>
-        <div style={{display: "flex", justifyContent: "center", flex: 1}}>
-          <Delete onClick={()=>setAlert(true)}>Delete</Delete>
-        </div>
-      </div>
+        : null
+      }
 
       <Modal
         animation={false} 
@@ -192,7 +212,6 @@ function Detail() {
           <Delete onClick={()=>{
             remove()
             setAlert(false)
-            history.push(`/quotations`)
           }} >Delete</Delete>
           <Edit onClick={()=>setAlert(false)}>Cancel</Edit>
         </Modal.Footer>

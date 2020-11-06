@@ -12,15 +12,13 @@ const Button = styled.button({
 })
 
 function Detail() {
-
-  let service = new ProductService()
-
   const { id } = useParams()
   const history = useHistory()
   const [product, setProduct] = useState(null)
   const [alert, setAlert] = useState(false)
   
   const remove = () => {
+    let service = new ProductService()
     service.delete(id)
     .then(res=>{
       console.log(res)
@@ -28,12 +26,12 @@ function Detail() {
   }
 
   useEffect(()=>{
-    
+    let service = new ProductService()
     service.get(id)
     .then(res=>{
       setProduct(res.data)
     })
-  }, [])
+  }, [id])
 
   return (
     product &&

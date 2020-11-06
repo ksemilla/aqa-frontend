@@ -62,7 +62,6 @@ function Create() {
   const store = useContext(StoreContext)
   const user = store.user
   const history = useHistory()
-  const [showHeader, setShowHeader] = useState(true)
   const [roles, setRoles] = useState({
     ae: [],
     se: [],
@@ -166,12 +165,12 @@ function Create() {
   }
 
   useEffect(()=>{
-    setData({
+    setData(data=>({
       ...data,
       ae_detail: user.scope === "ae" ? user : null,
       se_detail: user.scope === "se" ? user : null,
       sl_detail: user.scope === "sl" ? user : null,
-    })
+    }))
   }, [user])
 
   useEffect(()=>{
@@ -186,7 +185,7 @@ function Create() {
       setRoles(store.roles)
     }
     
-  }, [])
+  }, [store])
 
   return (
     <Container style={{padding: "0.5rem"}}>

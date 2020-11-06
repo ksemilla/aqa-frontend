@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import Autosuggest from 'react-autosuggest';
 import { TextArea } from "../../styles/elements/TextArea"
 import { Input } from "../../styles/elements/Input"
 import TextField from '@material-ui/core/TextField';

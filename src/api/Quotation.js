@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { get } from 'mobx';
 
 const API_URL = 'http://localhost:8000';
 
