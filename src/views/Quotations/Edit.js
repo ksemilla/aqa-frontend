@@ -41,6 +41,15 @@ const SubmitButton = styled.div`
   }
 `
 
+const Title = styled.div`
+  flex: 1;
+  font-size: 2rem;
+  font-weight: bold;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 const QuotationItemHeader = () => {
   return (
     <div style={{display: "flex", }}>
@@ -194,10 +203,12 @@ function Edit() {
   return (
     <Container style={{padding: "0.5rem"}}>
       <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>
-        <div style={{flex: 1, fontWeight: "bold", fontSize: "2.5rem", color: "#285ac7"}}>AQA</div>
-        <div style={{flex: 1, fontSize: "2rem"}}>Quotation # {id}</div>
+        <div style={{flex: 1, fontWeight: "bold", fontSize: "2.5rem", color: "#285ac7"}}></div>
+        <Title onClick={()=>history.push(`/quotation/${id}`)}>Quotation # {id}</Title>
         <div style={{flex: 1}}></div>
       </div>
+
+      <hr />
 
       <form onSubmit={onSubmit}>
         <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>

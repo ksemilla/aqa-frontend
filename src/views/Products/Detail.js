@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useHistory } from "react-router-dom"
 
+import { StoreContext } from "../../store"
 import ProductService from "../../api/Product"
 
 import Modal from 'react-bootstrap/Modal'
-import Container from 'react-bootstrap/Container'
+import {Container} from "../../styles/Containers"
+import {Primary, Error} from "../../styles/elements/Button"
 import styled from "styled-components"
 
 const Button = styled.button({
@@ -16,6 +18,7 @@ function Detail() {
   const history = useHistory()
   const [product, setProduct] = useState(null)
   const [alert, setAlert] = useState(false)
+  const store = useContext(StoreContext)
   
   const remove = () => {
     let service = new ProductService()
@@ -35,17 +38,55 @@ function Detail() {
 
   return (
     product &&
-    <Container>
-      <div style={{marginBottom: "1rem"}}>
-        <div style={{fontSize: "2rem"}}>{product.model_name}</div>
-        <div style={{}}>{`Description: ${product.description}`}</div>
-        <div style={{}}>{`Sell Price: ${product.sell_price / 100}`}</div>
-        <div style={{}}>{`Cost Price: ${product.cost_price / 100}`}</div>
-        <div style={{}}>{`Stock Qty: ${product.stock_qty / 100}`}</div>
-        <div style={{}}>{`Capacity: ${product.capacity}`}</div>
+    <Container style={{maxWidth: "600px"}}>
+      <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+        <div style={{width: "100px"}}>Model:</div>
+        <div style={{flex: 1, fontWeight: "bold"}}>
+          {product.model_name}
+        </div>
       </div>
-      <Button onClick={()=>history.push(`/product/${id}/edit`)}>Edit</Button>
-      <Button onClick={()=>setAlert(true)}>Delete</Button>
+      <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+        <div style={{width: "100px"}}>Description:</div>
+        <div style={{flex: 1, fontWeight: "bold"}}>
+          {product.description}
+        </div>
+      </div>
+      <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+        <div style={{width: "100px"}}>Sell Price:</div>
+        <div style={{flex: 1, fontWeight: "bold"}}>
+          {product.sell_price}
+        </div>
+      </div>
+      <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+        <div style={{width: "100px"}}>Cost Price:</div>
+        <div style={{flex: 1, fontWeight: "bold"}}>
+          {product.cost_price}
+        </div>
+      </div>
+      <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+        <div style={{width: "100px"}}>Stock Qty:</div>
+        <div style={{flex: 1, fontWeight: "bold"}}>
+          {product.stock_qty}
+        </div>
+      </div>
+      <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+        <div style={{width: "100px"}}>Capacity:</div>
+        <div style={{flex: 1}}>
+         {product.capacity}
+        </div>
+      </div>
+
+
+      {
+        store.user.scope === "scm" ?
+        <>
+          <Primary onClick={()=>history.push(`/product/${id}/edit`)}>Edit</Primary>
+          <Error onClick={()=>setAlert(true)}>Delete</Error>
+        </>
+        : null
+      }
+
+      
 
       <Modal
         animation={false} 

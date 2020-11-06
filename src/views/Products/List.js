@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from "react-router-dom"
-import Container from 'react-bootstrap/Container'
+
+import {Container} from '../../styles/Containers'
 
 import ProductService from "../../api/Product"
 import Inline from "./Inline"
@@ -9,10 +10,10 @@ import styled from "styled-components"
 
 const Add = styled.span`
   padding: 1rem;
-  color: blue;
+  color: #186bc4;
   &:hover {
     cursor: pointer;
-    background-color: #EEE;
+    color: #11549c;
   }
 `
 
@@ -22,9 +23,7 @@ const ListWrapper = styled.div`
 
 const Item = styled.span`
   padding: 0.5rem;
-  vertical-align: center;
-  width: ${props => props.width};
-  flex: ${props => props.flex};
+  flex: 1;
 `
 
 function List() {
@@ -44,17 +43,17 @@ function List() {
 
   return (
     <Container>
-      <div style={{padding: "1rem 0rem"}}>
-        <span>Products - </span>
-        <Add onClick={()=>history.push(`/products/create`)}>Add new</Add>
+      <div style={{display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem"}}>
+        <div>Products</div>
+        <Add onClick={()=>history.push(`/products/create`)}><i className="fa fa-plus" aria-hidden="true"></i></Add>
       </div>
       <ListWrapper>
-        <Item width={`200px`}>Model</Item>
-        <Item width={`300px`}>Description</Item>
-        <Item width={`200px`}>Sell Price</Item>
-        <Item width={`200px`}>Cost Price</Item>
-        <Item width={`200px`}>Stocks</Item>
-        <Item width={`200px`}>Capacity</Item>
+        <Item>Model</Item>
+        <Item>Description</Item>
+        <Item>Sell Price</Item>
+        <Item>Cost Price</Item>
+        <Item>Stocks</Item>
+        <Item>Capacity</Item>
       </ListWrapper>
       {
         products.map((product, idx)=>(

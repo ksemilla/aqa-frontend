@@ -3,14 +3,10 @@ import { useHistory } from "react-router-dom"
 
 import ProductService from "../../api/Product"
 
-import Container from 'react-bootstrap/Container'
-import styled from "styled-components"
-
-const Button = styled.button`
-  &:hover {
-    cursor: pointer;
-  }
-`
+import { Container } from "../../styles/Containers"
+import {Input} from "../../styles/elements/Input"
+import {TextArea} from "../../styles/elements/TextArea"
+import {Primary} from "../../styles/elements/Button"
 
 function Create() {
 
@@ -52,34 +48,46 @@ function Create() {
   }
 
   return (
-    <Container>
-      <div>Creating new Product</div>
+    <Container style={{maxWidth: "600px"}}>
+      <div style={{textAlign: "center", fontSize: "2rem", fontWeight: "bold"}}>Creating New Product</div>
       <form onSubmit={onSubmit}> 
-        <div>
-          <div>Model  Name</div>
-          <input name="model_name" value={data.model_name} onChange={onChange}/>
+        <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+          <div style={{width: "100px"}}>Model</div>
+          <div style={{flex: 1}}>
+            <Input name="model_name" value={data.model_name} onChange={onChange}/>
+          </div>
         </div>
-        <div>
-          <div>Description</div>
-          <textarea name="description" value={data.description} onChange={onChange}/>
+        <div style={{display: "flex", alignItems: "top"}}>
+          <div style={{width: "100px"}}>Description</div>
+          <div style={{flex: 1}}>
+            <TextArea name="description" value={data.description} onChange={onChange}/>
+          </div>
         </div>
-        <div>
-          <div>Sell Price</div>
-          <input name="sell_price" type="number" step="0.01" min="0" value={data.sell_price} onChange={onChange}/>
+        <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+          <div style={{width: "100px"}}>Sell Price</div>
+          <div style={{flex: 1}}>
+            <Input name="sell_price" value={data.sell_price} onChange={onChange}/>
+          </div>
         </div>
-        <div>
-          <div>Cost Price</div>
-          <input name="cost_price" type="number" step="0.01" min="0" value={data.cost_price} onChange={onChange}/>
+        <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+          <div style={{width: "100px"}}>Cost Price</div>
+          <div style={{flex: 1}}>
+            <Input name="cost_price" value={data.cost_price} onChange={onChange}/>
+          </div>
         </div>
-        <div>
-          <div>Stock Qty</div>
-          <input name="stock_qty" type="number" step="0.01" value={data.stock_qty} onChange={onChange}/>
+        <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+          <div style={{width: "100px"}}>Stock Qty</div>
+          <div style={{flex: 1}}>
+            <Input name="stock_qty" value={data.stock_qty} onChange={onChange}/>
+          </div>
         </div>
-        <div>
-          <div>Capacity</div>
-          <input name="capacity" value={data.capacity} onChange={onChange}/>
+        <div style={{display: "flex", alignItems: "center", marginBottom: "0.5rem"}}>
+          <div style={{width: "100px"}}>Capacity</div>
+          <div style={{flex: 1}}>
+            <Input name="capacity" value={data.capacity} onChange={onChange}/>
+          </div>
         </div>
-        <Button type="submit">Add</Button>
+        <Primary type="submit" onClick={onSubmit}>Add</Primary>
       </form>
     </Container>
   )

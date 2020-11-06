@@ -191,10 +191,12 @@ function Create() {
     <Container style={{padding: "0.5rem"}}>
 
       <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>
-        <div style={{flex: 1, fontWeight: "bold", fontSize: "2.5rem", color: "#285ac7"}}>AQA</div>
-        <div style={{flex: 1, fontSize: "2rem"}}>Creating New Quotation</div>
+        <div style={{flex: 1, fontWeight: "bold", fontSize: "2.5rem", color: "#285ac7"}}></div>
+        <div style={{flex: 1, fontSize: "2rem", fontWeight: "bold"}}>Creating New Quotation</div>
         <div style={{flex: 1}}></div>
       </div>
+
+      <hr />
 
       <form onSubmit={onSubmit}>
         <div style={{display: "flex" ,flexWrap: "wrap", alignItems: "center"}}>

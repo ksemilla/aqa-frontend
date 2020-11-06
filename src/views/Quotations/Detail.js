@@ -71,16 +71,18 @@ function Detail() {
           setIsAllowed(store.user.id === quotation.sl_detail.id)
         }
       }
-      
+    })
+    .catch(res=>{
+      console.log(res)
     })
   }, [id, quotation, store.user.scope, store.user.id])
 
   return (
     quotation && 
     <Container style={{padding: "0.2rem"}}>
-      <div style={{fontWeight: "bold", fontSize: "2.5rem", color: "#285ac7"}}>
+      {/* <div style={{fontWeight: "bold", fontSize: "2.5rem", color: "#285ac7"}}>
         AQA
-      </div>
+      </div> */}
       <div style={{fontSize: "1.3rem"}}>
 
         <div style={{display: "flex"}}>

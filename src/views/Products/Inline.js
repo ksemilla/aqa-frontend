@@ -14,21 +14,19 @@ const ListWrapper = styled.div`
 
 const Item = styled.span`
   padding: 0.5rem;
-  vertical-align: center;
-  width: ${props => props.width};
-  flex: ${props => props.flex};
+  flex: 1;
 `
 
 function Inline({ product, bgColor }) {
   const history = useHistory()
   return (
     <ListWrapper bgColor={bgColor} onClick={()=>history.push(`/product/${product.id}`)}>
-      <Item width={`200px`}>{product.model_name}</Item>
-      <Item width={`300px`}>{product.description}</Item>
-      <Item width={`200px`}>{product.sell_price / 100}</Item>
-      <Item width={`200px`}>{product.cost_price / 100}</Item>
-      <Item width={`200px`}>{product.stock_qty / 100}</Item>
-      <Item width={`200px`}>{product.capacity}</Item>
+      <Item>{product.model_name}</Item>
+      <Item>{product.description}</Item>
+      <Item>{product.sell_price / 100}</Item>
+      <Item>{product.cost_price / 100}</Item>
+      <Item>{product.stock_qty / 100}</Item>
+      <Item>{product.capacity}</Item>
     </ListWrapper>
   )
 }
