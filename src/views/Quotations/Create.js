@@ -60,9 +60,14 @@ const QuotationItemHeader = () => {
 function Create() {
 
   const store = useContext(StoreContext)
+  const user = store.user
   const history = useHistory()
   const [showHeader, setShowHeader] = useState(true)
-  const [roles, setRoles] = useState(null)
+  const [roles, setRoles] = useState({
+    ae: [],
+    se: [],
+    sl: []
+  })
   const [data, setData] = useState({
     created_date: moment().toISOString(),
     company_name: "",
@@ -73,11 +78,11 @@ function Create() {
     discount: 0,
     total_price: 0,
     application_engr: 0,
-    ae_detail: {},
+    ae_detail: null,
     sales_engr: 0,
-    se_detail: {},
+    se_detail: null,
     sales_lead: 0,
-    sl_detail: {},
+    sl_detail: null,
     items: [{
       key: uuidv4(),
       line_number: 0,
@@ -159,6 +164,15 @@ function Create() {
       console.log(res.response)
     })
   }
+
+  useEffect(()=>{
+    setData({
+      ...data,
+      ae_detail: user.scope === "ae" ? user : null,
+      se_detail: user.scope === "se" ? user : null,
+      sl_detail: user.scope === "sl" ? user : null,
+    })
+  }, [user])
 
   useEffect(()=>{
     if (Object.keys(store.roles).length === 0) {
@@ -265,52 +279,52 @@ function Create() {
           <div style={{flex: 1, display: "flex", alignItems: "center"}}>
             <div style={{padding: "0.5rem", width: "100px"}}>App. Engr.</div>
             <div style={{flex: 1}}>
-            <Autocomplete
-              options={roles ? roles.ae : []}
-              getOptionLabel={(option) => option.email}
-              clearOnEscape
-              blurOnSelect
-              renderInput={(params) => <TextField {...params}  />}
-              
-              getOptionSelected={(o,v)=> o.email === v.email}
-              onChange={(event, value)=>{
-                setData({...data, ae_detail: value, application_engr: value ? value.id : 0})
-              }}
-            />
+              <Autocomplete
+                options={roles.ae}
+                getOptionLabel={(option) => option.email}
+                clearOnEscape
+                blurOnSelect
+                renderInput={(params) => <TextField {...params}  />}
+                value={data.ae_detail}
+                getOptionSelected={(o,v)=> o.email === v.email}
+                onChange={(event, value)=>{
+                  setData({...data, ae_detail: value, application_engr: value ? value.id : 0})
+                }}
+              />
             </div>
           </div>
           <div style={{flex: 1, display: "flex", alignItems: "center"}}>
             <div style={{padding: "0.5rem", width: "100px"}}>Sales Engr.</div>
             <div style={{flex: 1}}>
-            <Autocomplete
-              options={roles ? roles.se : []}
-              getOptionLabel={(option) => option.email}
-              clearOnEscape
-              blurOnSelect
-              renderInput={(params) => <TextField {...params}  />}
-              
-              getOptionSelected={(o,v)=> o.email === v.email}
-              onChange={(event, value)=>{
-                setData({...data, se_detail: value, sales_engr: value ? value.id : 0})
-              }}
-            />
+              <Autocomplete
+                options={roles ? roles.se : []}
+                getOptionLabel={(option) => option.email}
+                clearOnEscape
+                blurOnSelect
+                renderInput={(params) => <TextField {...params}  />}
+                
+                getOptionSelected={(o,v)=> o.email === v.email}
+                onChange={(event, value)=>{
+                  setData({...data, se_detail: value, sales_engr: value ? value.id : 0})
+                }}
+              />
             </div>
           </div>
           <div style={{flex: 1, display: "flex", alignItems: "center"}}>
             <div style={{padding: "0.5rem", width: "100px"}}>Sales Lead</div>
             <div style={{flex: 1}}>
-            <Autocomplete
-              options={roles ? roles.sl : []}
-              getOptionLabel={(option) => option.email}
-              clearOnEscape
-              blurOnSelect
-              renderInput={(params) => <TextField {...params}  />}
-              
-              getOptionSelected={(o,v)=> o.email === v.email}
-              onChange={(event, value)=>{
-                setData({...data, sl_detail: value, sales_lead: value ? value.id : 0})
-              }}
-            />
+              <Autocomplete
+                options={roles ? roles.sl : []}
+                getOptionLabel={(option) => option.email}
+                clearOnEscape
+                blurOnSelect
+                renderInput={(params) => <TextField {...params}  />}
+                
+                getOptionSelected={(o,v)=> o.email === v.email}
+                onChange={(event, value)=>{
+                  setData({...data, sl_detail: value, sales_lead: value ? value.id : 0})
+                }}
+              />
             </div>
           </div>
         </div>
