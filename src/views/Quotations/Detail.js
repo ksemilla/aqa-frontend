@@ -5,6 +5,7 @@ import {StoreContext} from "../../store"
 import QuotationService from "../../api/Quotation"
 import { sortByLineNumber } from "../../utils"
 import DetailInline from "./DetailInline"
+import { downloadFile } from "./utils"
 
 import Modal from 'react-bootstrap/Modal'
 import moment from "moment"
@@ -38,7 +39,6 @@ const Delete = styled.div`
   }
 `
 
-
 function Detail() {
 
   const [quotation, setQuotation] = useState(null)
@@ -55,7 +55,7 @@ function Detail() {
       history.push(`/quotations`)
     })
   }
-
+  console.log(quotation)
   useEffect(()=>{
     let service = new QuotationService()
     service.get(id)
@@ -75,7 +75,9 @@ function Detail() {
     .catch(res=>{
       console.log(res)
     })
-  }, [id, quotation, store.user.scope, store.user.id])
+  }, [id, store.user.scope, store.user.id])
+
+  console.log(quotation)
 
   return (
     quotation && 
@@ -126,7 +128,7 @@ function Detail() {
           </div>
           <div style={{display: "flex", flex: 1}}>
             <div style={{width: "120px"}}>Discount: </div>
-            <b>{quotation.discount} %</b>
+            <b>{quotation.discount_rate} %</b>
           </div>
         </div>
 
@@ -141,7 +143,7 @@ function Detail() {
           </div>
           <div style={{display: "flex", flex: 1}}>
             <div style={{width: "120px"}}>Disc. Price: </div>
-            <b>{quotation.total_price * (100 - quotation.discount) / 100}</b>
+            <b>{quotation.total_price * (100 - quotation.discount_rate) / 100}</b>
           </div>
         </div>
 
@@ -167,7 +169,7 @@ function Detail() {
         <div style={{width: "20px"}}>#</div>
         <div style={{flex: 1}}>Tagging</div>
         <div style={{flex: 1}}>Model</div>
-        <div style={{flex: 1}}>Description</div>
+        <div style={{flex: 2}}>Description</div>
         <div style={{flex: 1}}>Quantity</div>
         <div style={{flex: 1}}>Sell Price</div>
         <div style={{flex: 1}}>Total</div>
@@ -181,18 +183,18 @@ function Detail() {
       }
 
       <hr />
-
+      
       {
         isAllowed ?
-        <div style={{display: "flex"}}>
-          <div style={{display: "flex", justifyContent: "center", flex: 1}}>
-            <Edit onClick={()=>history.push(`/quotation/${id}/edit`)}>Edit</Edit>
-          </div>
-          <div style={{display: "flex", justifyContent: "center", flex: 1}}>
-            <Delete onClick={()=>setAlert(true)}>Delete</Delete>
-          </div>
+        <div style={{display: "flex", justifyContent: "center"}}>
+          <Edit onClick={()=>history.push(`/quotation/${id}/edit`)}>Edit</Edit>
+          <Edit onClick={()=>downloadFile(quotation)} style={{marginLeft: "1rem", marginRight: "1rem"}}>Download as .xls</Edit>
+          <Delete onClick={()=>setAlert(true)}>Delete</Delete>
         </div>
-        : null
+        :
+        <div style={{display: "flex", justifyContent: "center"}}>
+          <Edit onClick={()=>downloadFile(quotation)}>Download as .xls</Edit>
+        </div>
       }
 
       <Modal

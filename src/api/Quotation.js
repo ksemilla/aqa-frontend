@@ -45,4 +45,9 @@ export default class QuotationService{
       return axios.get(url, getConfig())
     }
 
+    getReminders(){
+      const url = `${API_URL}/api/quotations/reminder/`
+      return axios.get(url, getConfig());
+    }
+
 }

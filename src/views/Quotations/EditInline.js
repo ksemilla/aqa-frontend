@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 
 import { TextArea } from "../../styles/elements/TextArea"
 import { Input } from "../../styles/elements/Input"
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-
 import ProductService from "../../api/Product"
 
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import styled from "styled-components"
 
 const Remove = styled.div`
@@ -68,12 +67,21 @@ function CreateInline({ item, remove, itemChange }) {
         />
       </div>
       <div style={{flex: 2, padding: "0.2rem"}}>
-        <TextArea value={item.description} style={{width: "100%"}} onChange={e=>{
-          itemChange({
-            idx: item.line_number,
-            description: e.target.value
-          })
-        }}/>
+        <TextArea
+          value={item.description}
+          style={{width: "100%", overflow: "hidden"}}
+          onChange={e=>{
+            itemChange({
+              idx: item.line_number,
+              description: e.target.value
+            })
+          }}
+          onHeightChange={(height)=>{
+            itemChange({ idx: item.line_number,
+              h_desc: Math.floor(height / 24)
+            })
+          }}
+        />
       </div>
       <div style={{width: "100px", padding: "0.2rem"}}>
         <Input style={{width: "100%"}} type="number" min={0} value={item.quantity} onChange={e=>{

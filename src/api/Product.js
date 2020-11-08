@@ -46,4 +46,8 @@ export default class ProductService{
       return axios.get(url, {params: {query}, ...getConfig()});
     }
 
+    getNextList(url) {
+      return axios.get(url, getConfig())
+    }
+
 }

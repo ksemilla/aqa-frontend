@@ -82,7 +82,7 @@ function Edit() {
     project: "",
     payment_terms: "",
     location: "",
-    discount: 0,
+    discount_rate: 0,
     total_price: 0,
     application_engr: 0,
     ae_detail: null,
@@ -98,7 +98,8 @@ function Edit() {
       model_name: "",
       description: "",
       quantity: 0,
-      sell_price: 0
+      sell_price: 0,
+      h_desc: 1
     }]
   })
 
@@ -113,7 +114,8 @@ function Edit() {
       model_name: "",
       description: "",
       quantity: 0,
-      sell_price: 0
+      sell_price: 0,
+      h_desc: 1
     })
     setData(tempData)
   }
@@ -133,6 +135,7 @@ function Edit() {
     tempData.items[newData.idx].description = newData.description || newData.description === "" ? newData.description : tempData.items[newData.idx].description
     tempData.items[newData.idx].quantity = newData.quantity || newData.quantity === 0 ? newData.quantity : tempData.items[newData.idx].quantity
     tempData.items[newData.idx].sell_price = newData.sell_price || newData.sell_price === 0 ? parseFloat(newData.sell_price) : tempData.items[newData.idx].sell_price
+    tempData.items[newData.idx].h_desc = newData.h_desc || newData.h_desc === 0 ? parseFloat(newData.h_desc) : tempData.items[newData.idx].h_desc
     let total = 0
     tempData.items.forEach(element => {
       total += element.sell_price * element.quantity
@@ -143,7 +146,7 @@ function Edit() {
 
   const onChange = e => {
     let value = e.target.value
-    if (e.target.name === "discount") {
+    if (e.target.name === "discount_rate") {
       if (value === "") {
         value = ""
       } else {
@@ -263,7 +266,7 @@ function Edit() {
           <div style={{flex: 1, display: "flex", alignItems: "center"}}>
             <div style={{padding: "0.5rem", width: "100px"}}>Discount</div>
             <div style={{flex: 1}}>
-              <Input name="discount" value={data.discount} onChange={onChange} type="number" min={0} step={0.01}/>
+              <Input name="discount_rate" value={data.discount_rate} onChange={onChange} type="number" min={0} step={0.01}/>
             </div>
           </div>
           <div style={{flex: 1, display: "flex", alignItems: "center"}}>

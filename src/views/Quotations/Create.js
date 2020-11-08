@@ -74,7 +74,7 @@ function Create() {
     project: "",
     payment_terms: "",
     location: "",
-    discount: 0,
+    discount_rate: 0,
     total_price: 0,
     application_engr: 0,
     ae_detail: null,
@@ -135,7 +135,7 @@ function Create() {
 
   const onChange = e => {
     let value = e.target.value
-    if (e.target.name === "discount") {
+    if (e.target.name === "discount_rate") {
       if (value === "") {
         value = ""
       } else {
@@ -152,7 +152,7 @@ function Create() {
     e.preventDefault()
     let newData = {
       ...data,
-      discount: data.discount === "" ? 0 : data.discount
+      discount_rate: data.discount_rate === "" ? 0 : data.discount_rate
     }
     let service = new QuotationService()
     service.create(newData)
@@ -251,7 +251,7 @@ function Create() {
           <div style={{flex: 1, display: "flex", alignItems: "center"}}>
             <div style={{padding: "0.5rem", width: "100px"}}>Discount</div>
             <div style={{flex: 1}}>
-              <Input name="discount" value={data.discount} onChange={onChange} type="number" min={0} step={0.01}/>
+              <Input name="discount_rate" value={data.discount_rate} onChange={onChange} type="number" min={0} step={0.01}/>
             </div>
           </div>
           <div style={{flex: 1, display: "flex", alignItems: "center"}}>

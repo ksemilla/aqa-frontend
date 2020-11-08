@@ -4,6 +4,7 @@ import {Container} from '../../styles/Containers'
 
 import QuotationService from "../../api/Quotation"
 import Inline from "./Inline"
+import { CursorPointer } from "../../styles/elements/CursorPointer"
 
 import styled from "styled-components"
 
@@ -58,7 +59,7 @@ function List() {
     quotations && 
     <Container>
       <div style={{display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem"}}>
-        <div>Quotations</div>
+        <CursorPointer>Quotations</CursorPointer>
         <Add onClick={()=>history.push(`/quotations/create`)}><i className="fa fa-plus" aria-hidden="true"></i></Add>
       </div>
       <ListWrapper style={{fontSize: "1.1rem", fontWeight: "bold"}}>

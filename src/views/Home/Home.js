@@ -1,11 +1,40 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
-import Container from 'react-bootstrap/Container'
+import {Container} from '../../styles/Containers'
+
+import QuotationService from "../../api/Quotation"
+import Inline from "./Inline"
 
 function Home() {
+
+  const [quotations, setQuotations] = useState([])
+
+  useEffect(()=>{
+    let api = new QuotationService()
+    api.getReminders()
+    .then(res=>{
+      setQuotations(res.data.results)
+    })
+    .catch(res=>{
+      console.log(res.response)
+    })
+  }, [])
+
   return (<Container>
-    <div style={{height: "1000px"}}>
-      Home Page
+    <div>
+      <div style={{textAlign: "center"}}>Quotations to follow up</div>
+      <div style={{display: "flex", fontWeight: "bold", padding: "0.5rem"}}>
+        <div style={{flex: 1}}>Ref #</div>
+        <div style={{flex: 1}}>Customer</div>
+        <div style={{flex: 1}}>Sales Engr</div>
+        <div style={{flex: 1}}>Expiry</div>
+        <div style={{flex: 1}}>Days Left</div>
+      </div>
+      {
+        quotations.map((item,idx)=>(
+          <Inline key={item.id} quotation={item} bgColor={idx % 2 === 0 ? "#EEE" : ""}/>
+        ))
+      }
     </div>
     
   </Container>)

@@ -8,14 +8,6 @@ import {Input} from "../../styles/elements/Input"
 import {TextArea} from "../../styles/elements/TextArea"
 import {Primary} from "../../styles/elements/Button"
 
-import styled from "styled-components"
-
-const Button = styled.button`
-  &:hover {
-    cursor: pointer;
-  }
-`
-
 function Edit() {
 
   const { id } = useParams()
