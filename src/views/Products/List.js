@@ -19,6 +19,8 @@ const Add = styled.span`
 
 const ListWrapper = styled.div`
   display: flex;
+  font-weight: bold;
+  font-size: 1.2rem;
 `
 
 const Item = styled.span`
@@ -57,7 +59,7 @@ function List() {
 
   return (
     <Container>
-      <div style={{display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem"}}>
+      <div style={{display: "flex", alignItems: "center", fontSize: "2rem"}}>
         <div>Products</div>
         <Add onClick={()=>history.push(`/products/create`)}><i className="fa fa-plus" aria-hidden="true"></i></Add>
       </div>

@@ -9,6 +9,7 @@ import { downloadFile } from "./utils"
 
 import Modal from 'react-bootstrap/Modal'
 import moment from "moment"
+import { useObserver } from "mobx-react"
 import styled from "styled-components"
 
 import { Container } from "../../styles/Containers"
@@ -43,6 +44,7 @@ function Detail() {
 
   const [quotation, setQuotation] = useState(null)
   const store = useContext(StoreContext)
+  const user = useObserver(()=>store.user)
   const { id } = useParams()
   const [alert, setAlert] = useState(false)
   const [isAllowed, setIsAllowed] = useState(false)
@@ -55,29 +57,30 @@ function Detail() {
       history.push(`/quotations`)
     })
   }
-  console.log(quotation)
+
   useEffect(()=>{
     let service = new QuotationService()
     service.get(id)
     .then(res=>{
       res.data.items.sort(sortByLineNumber)
       setQuotation(res.data)
-      if (quotation) {
-        if (store.user.scope === "ae") {
-          setIsAllowed(store.user.id === quotation.ae_detail.id)
-        } else if (store.user.scope === "se") {
-          setIsAllowed(store.user.id === quotation.se_detail.id)
-        } else if (store.user.scope === "sl") {
-          setIsAllowed(store.user.id === quotation.sl_detail.id)
-        }
-      }
     })
     .catch(res=>{
       console.log(res)
     })
-  }, [id, store.user.scope, store.user.id])
+  }, [id])
 
-  console.log(quotation)
+  useEffect(()=>{
+    if (quotation) {
+      if (user.scope === "ae") {
+        setIsAllowed(user.id === quotation.ae_detail.id)
+      } else if (user.scope === "se") {
+        setIsAllowed(user.id === quotation.se_detail.id)
+      } else if (user.scope === "sl") {
+        setIsAllowed(user.id === quotation.sl_detail.id)
+      }
+    }
+  }, [user.id, user.scope, quotation])
 
   return (
     quotation && 

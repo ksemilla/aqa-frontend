@@ -73,7 +73,13 @@ function CreateInline({ item, remove, itemChange }) {
             idx: item.line_number,
             description: e.target.value
           })
-        }}/>
+        }}
+        onHeightChange={(height)=>{
+          itemChange({ idx: item.line_number,
+            h_desc: Math.floor(height / 24)
+          })
+        }}
+        />
       </div>
       <div style={{width: "100px", padding: "0.2rem"}}>
         <Input style={{width: "100%"}} type="number" min={0} value={item.quantity} onChange={e=>{

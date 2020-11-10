@@ -6,6 +6,7 @@ import { StoreContext } from "../store"
 // import Nav from 'react-bootstrap/Nav'
 // import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
+import { useObserver } from "mobx-react"
 
 import { Container } from "../styles/Containers"
 
@@ -49,38 +50,24 @@ function NavComponent() {
   const location = useLocation()
   const history = useHistory()
   const page = location.pathname.split("/")[1]
+  const user = useObserver(()=>store.user)
 
   return (
     <div style={{width: "100%", color: "white", backgroundColor: "#192445"}}>
       <Container style={{display: "flex", padding: "0.5rem", alignItems: "center"}}>
-        {/* <Navbar bg="#192445" expand="lg">
-          <Navbar.Brand href="/">
-            <div style={{color: "rgba(255,255,255,0.8)"}}>AQA</div>
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav>
-              <Nav.Item>
-                <PillItem to="/quotations" color={page==="quotations" ? "black" : "rgba(0,0,0,.5)"} bgcolor={page==="quotations" ? "#007bff" : ""} >Quotations</PillItem>
-              </Nav.Item>
-              <Nav.Item>
-                <PillItem to="/products" color={page==="products" ? "black" : "rgba(0,0,0,.5)"} bgcolor={page==="products" ? "#007bff" : ""} >Products</PillItem>
-              </Nav.Item>
-            </Nav>
-            <Nav>
-              <NavDropdown title={<span>Settings</span>} id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">My Account</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="/auth/login" onClick={()=>{store.logUserOut()}}>Logout</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar> */}
+
         <LogoText onClick={()=>history.push("/")}>AQA</LogoText>
+
         <div style={{flex: 1, display: "flex", justifyContent: "center"}}>
           <PillItem to="/quotations" bgcolor={page==="quotations" || page==="quotation" ? "#26345e" : ""} >Quotations</PillItem>
           <PillItem to="/products" bgcolor={page==="products" || page==="product" ? "#26345e" : ""} >Products</PillItem>
+          {
+            user.scope === "admin" ?
+            <PillItem to="/admin" bgcolor={page==="admin" || page==="admin" ? "#26345e" : ""} >Admin</PillItem>
+            : null
+          }
         </div>
+
         <div style={{flex: 1, display: "flex", justifyContent: "flex-end"}}>
           <NavDropdown title={<Settings><i className="fa fa-cog" aria-hidden="true"></i></Settings>} id="basic-nav-dropdown">
             <NavDropdown.Item href="#action/3.1">My Account</NavDropdown.Item>
@@ -88,6 +75,7 @@ function NavComponent() {
             <NavDropdown.Item href="/auth/login" onClick={()=>{store.logUserOut()}}>Logout</NavDropdown.Item>
           </NavDropdown>
         </div>
+
       </Container>
     </div>
   )

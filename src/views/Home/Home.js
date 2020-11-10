@@ -21,8 +21,7 @@ function Home() {
   }, [])
 
   return (<Container>
-    <div>
-      <div style={{textAlign: "center"}}>Quotations to follow up</div>
+    <div style={{padding: "0.5rem"}}>
       <div style={{display: "flex", fontWeight: "bold", padding: "0.5rem"}}>
         <div style={{flex: 1}}>Ref #</div>
         <div style={{flex: 1}}>Customer</div>

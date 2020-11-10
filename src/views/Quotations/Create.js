@@ -125,6 +125,7 @@ function Create() {
     tempData.items[newData.idx].description = newData.description || newData.description === "" ? newData.description : tempData.items[newData.idx].description
     tempData.items[newData.idx].quantity = newData.quantity || newData.quantity === 0 ? newData.quantity : tempData.items[newData.idx].quantity
     tempData.items[newData.idx].sell_price = newData.sell_price || newData.sell_price === 0 ? parseFloat(newData.sell_price) : tempData.items[newData.idx].sell_price
+    tempData.items[newData.idx].h_desc = newData.h_desc || newData.h_desc === 0 ? parseFloat(newData.h_desc) : tempData.items[newData.idx].h_desc
     let total = 0
     tempData.items.forEach(element => {
       total += element.sell_price * element.quantity

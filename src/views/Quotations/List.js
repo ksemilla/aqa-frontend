@@ -6,6 +6,7 @@ import QuotationService from "../../api/Quotation"
 import Inline from "./Inline"
 import { CursorPointer } from "../../styles/elements/CursorPointer"
 
+import Spinner from 'react-bootstrap/Spinner'
 import styled from "styled-components"
 
 const Add = styled.span`
@@ -56,9 +57,9 @@ function List() {
   }, [])
 
   return (
-    quotations && 
+    quotations &&
     <Container>
-      <div style={{display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem"}}>
+      <div style={{display: "flex", alignItems: "center", fontSize: "2rem"}}>
         <CursorPointer>Quotations</CursorPointer>
         <Add onClick={()=>history.push(`/quotations/create`)}><i className="fa fa-plus" aria-hidden="true"></i></Add>
       </div>

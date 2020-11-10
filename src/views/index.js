@@ -12,6 +12,11 @@ import QuotationCreate from "./Quotations/Create"
 import QuotationDetail from "./Quotations/Detail"
 import QuotationEdit from "./Quotations/Edit"
 
+import AdminDashBoard from "./Admin/Dashboard"
+import EmployeeList from "./Admin/EmployeeList"
+import EmployeeCreate from "./Admin/EmployeeCreate"
+import EmployeeEdit from "./Admin/EmployeeEdit"
+
 import Page404 from "./404"
 
 export {
@@ -28,6 +33,11 @@ export {
   QuotationCreate,
   QuotationDetail,
   QuotationEdit,
+
+  AdminDashBoard,
+  EmployeeList,
+  EmployeeCreate,
+  EmployeeEdit,
 
   Page404
 }
